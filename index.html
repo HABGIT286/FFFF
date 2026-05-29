@@ -3,15 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎮 لعبة الحروف الاحترافية | Pro Letters Game</title>
+    <title>🎮 لعبة الحروف الاحترافية</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- ThumbmarkJS for Device Fingerprinting -->
-    <script src="https://cdn.jsdelivr.net/npm/@thumbmarkjs/thumbmarkjs/dist/thumbmark.umd.js"></script>
-    
     <style>
         :root {
             --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -27,10 +22,6 @@
             --danger: #ef4444;
             --warning: #f59e0b;
             --info: #3b82f6;
-            --border-radius: 20px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --glass-border: 1px solid rgba(255,255,255,0.1);
-            --glass-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
@@ -40,44 +31,79 @@
             color: var(--text-primary);
             min-height: 100vh;
             overflow-x: hidden;
-            position: relative;
-            line-height: 1.6;
         }
 
-        /* Background Animation */
         .bg-animation {
-            position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
-        }        .bg-animation::before {
-            content: ''; position: absolute; width: 200%; height: 200%;
+            position: fixed; inset: 0; z-index: 0;
             background: radial-gradient(circle at 20% 80%, rgba(120,119,198,0.25) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 20%, rgba(255,119,198,0.25) 0%, transparent 50%),
-                        radial-gradient(circle at 50% 50%, rgba(79,172,254,0.15) 0%, transparent 60%);
-            animation: bgMove 25s ease-in-out infinite;
-            opacity: 0.6;
+                        radial-gradient(circle at 80% 20%, rgba(255,119,198,0.25) 0%, transparent 50%);
+            animation: bgMove 20s ease-in-out infinite;
         }
+
         @keyframes bgMove {
-            0%, 100% { transform: translate(0,0) rotate(0deg); }
-            33% { transform: translate(-30px,-30px) rotate(120deg); }
-            66% { transform: translate(30px,-50px) rotate(240deg); }
+            0%, 100% { transform: translate(0,0); }
+            50% { transform: translate(-30px,-30px); }
         }
 
         .app-container {
             position: relative; z-index: 1; max-width: 1600px; margin: 0 auto;
-            padding: 25px 20px; min-height: 100vh;
-        }
+            padding: 25px 20px;        }
 
-        /* Glass Card Effect */
         .glass-card {
             background: var(--card-bg); backdrop-filter: blur(20px);
-            border: var(--glass-border); border-radius: var(--border-radius);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
             padding: 28px; margin: 18px 0;
-            box-shadow: var(--glass-shadow); transition: var(--transition);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
         }
-        .glass-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 35px 70px -15px rgba(0,0,0,0.6);
-            border-color: rgba(255,255,255,0.2);
+
+        /* Registration Modal */
+        .reg-modal {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.95); z-index: 10001;
+            align-items: center; justify-content: center;
+            padding: 20px; backdrop-filter: blur(10px);
         }
+
+        .reg-modal.active { display: flex; animation: fadeIn 0.3s ease; }
+
+        .reg-content {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 20px; padding: 40px;
+            max-width: 450px; width: 100%;
+            border: 2px solid var(--info);
+            text-align: center;
+            animation: slideUp 0.4s ease;
+        }
+
+        .reg-icon {
+            width: 80px; height: 80px; background: var(--accent-gradient);
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; margin: 0 auto 20px;
+            font-size: 2.5em;
+        }
+
+        .reg-content h2 { font-size: 1.8em; margin-bottom: 12px; }
+        .reg-content p { color: var(--text-secondary); margin-bottom: 25px; }
+
+        .form-input {
+            width: 100%; padding: 14px 18px;
+            background: rgba(255,255,255,0.07);
+            border: 2px solid rgba(255,255,255,0.12);
+            border-radius: 14px; color: white;
+            font-size: 1.05em; outline: none;
+            margin-bottom: 20px;
+        }
+
+        .form-input:focus { border-color: var(--info); background: rgba(255,255,255,0.12); }
+
+        .btn-primary {            width: 100%; padding: 15px; border: none;
+            border-radius: 14px; font-size: 1.1em;
+            font-weight: 800; cursor: pointer;
+            background: var(--accent-gradient); color: white;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+
+        .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
 
         /* VIP Button */
         .vip-login-btn {
@@ -86,254 +112,239 @@
             border: none; border-radius: 50px; color: white;
             font-weight: 800; font-size: 1.05em; cursor: pointer;
             box-shadow: 0 10px 35px rgba(245,175,25,0.45);
-            transition: var(--transition); display: flex; align-items: center; gap: 10px;
-            animation: pulse 2.5s infinite;
+            display: flex; align-items: center; gap: 10px;
+            animation: pulse 2s infinite;
         }
-        .vip-login-btn:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 15px 45px rgba(245,175,25,0.65); }
+
         @keyframes pulse {
             0%, 100% { box-shadow: 0 10px 35px rgba(245,175,25,0.45); }
             50% { box-shadow: 0 10px 50px rgba(245,175,25,0.75); }
         }
 
         /* VIP Modal */
-        .vip-modal {            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92);
-            z-index: 10000; align-items: center; justify-content: center;
-            padding: 20px; backdrop-filter: blur(12px);
+        .vip-modal {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.95); z-index: 10000;
+            align-items: center; justify-content: center;
+            padding: 20px; backdrop-filter: blur(10px);
         }
-        .vip-modal.active { display: flex; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
+
+        .vip-modal.active { display: flex !important; animation: fadeIn 0.3s ease; }
+
         .vip-modal-content {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border-radius: var(--border-radius); padding: 38px;
-            max-width: 480px; width: 100%; border: 2px solid var(--warning);
-            animation: modalSlide 0.35s ease; position: relative;
+            border-radius: 20px; padding: 38px;
+            max-width: 480px; width: 100%;
+            border: 2px solid var(--warning);
+            position: relative;
+            animation: slideUp 0.35s ease;
         }
-        @keyframes modalSlide { from { opacity: 0; transform: scale(0.93) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-        
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .vip-modal-header { text-align: center; margin-bottom: 28px; }
-        .vip-modal-header .vip-icon {
+
+        .vip-icon {
             width: 78px; height: 78px; background: var(--vip-gradient);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 18px; font-size: 2.3em; box-shadow: 0 0 30px rgba(245,175,25,0.5);
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; margin: 0 auto 18px;
+            font-size: 2.3em;
         }
+
         .vip-modal-header h2 {
             font-size: 1.9em; background: var(--gold-gradient);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin-bottom: 8px; font-weight: 900;
+            margin-bottom: 8px;
         }
-        
+
         .vip-input-group { margin-bottom: 22px; }
         .vip-input-group label {
             display: block; margin-bottom: 9px; font-weight: 700;
-            color: var(--text-primary); font-size: 0.95em;
         }
+
         .vip-input-field {
-            width: 100%; padding: 14px 18px; background: rgba(255,255,255,0.07);
-            border: 2px solid rgba(255,255,255,0.12); border-radius: 14px;
-            color: var(--text-primary); font-size: 1.05em; outline: none;
-            transition: var(--transition);
+            width: 100%; padding: 14px 18px;
+            background: rgba(255,255,255,0.07);
+            border: 2px solid rgba(255,255,255,0.12);
+            border-radius: 14px; color: white;
+            font-size: 1.05em; outline: none;
         }
-        .vip-input-field:focus { border-color: var(--warning); background: rgba(255,255,255,0.12); }
-        
+
+        .vip-input-field:focus {
+            border-color: var(--warning);
+            background: rgba(255,255,255,0.12);
+        }
+
         .vip-btn {
-            width: 100%; padding: 16px; border: none; border-radius: 14px;
-            font-size: 1.1em; font-weight: 800; cursor: pointer;
+            width: 100%; padding: 16px; border: none;
+            border-radius: 14px; font-size: 1.1em;
+            font-weight: 800; cursor: pointer;
             background: var(--vip-gradient); color: white;
-            transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 10px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
         }
-        .vip-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 35px rgba(245,175,25,0.5); }
-        .vip-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
-        
-        .vip-close {            position: absolute; top: 18px; left: 18px; background: none;
-            border: none; color: var(--text-secondary); font-size: 1.4em;
-            cursor: pointer; width: 36px; height: 36px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            transition: var(--transition);
-        }
-        .vip-close:hover { color: var(--danger); background: rgba(239,68,68,0.15); }
 
-        /* Dashboard Layout */
-        .dashboard { 
-            display: grid; grid-template-columns: 290px 1fr; gap: 24px; 
-            animation: fadeIn 0.5s ease; 
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
+        .vip-btn:disabled { opacity: 0.7; cursor: not-allowed; }
 
-        .sidebar { 
-            position: sticky; top: 25px; height: calc(100vh - 50px); 
-            overflow-y: auto; padding-bottom: 20px;
+        .vip-close {
+            position: absolute; top: 18px; left: 18px;
+            background: rgba(255,255,255,0.1); border: none;
+            color: white; width: 36px; height: 36px;
+            border-radius: 50%; cursor: pointer;
+            font-size: 1.2em;        }
+
+        .vip-close:hover { background: var(--danger); }
+
+        /* Dashboard */
+        .dashboard {
+            display: grid; grid-template-columns: 290px 1fr; gap: 24px;
         }
+
+        .sidebar {
+            position: sticky; top: 25px; height: calc(100vh - 50px);
+            overflow-y: auto;
+        }
+
         .sidebar-header {
-            text-align: center; padding: 24px 20px; background: var(--primary-gradient);
-            border-radius: var(--border-radius); margin-bottom: 24px;
-            box-shadow: 0 10px 30px rgba(102,126,234,0.3);
+            text-align: center; padding: 24px 20px;
+            background: var(--primary-gradient);
+            border-radius: 20px; margin-bottom: 24px;
         }
-        .sidebar-header.vip {
-            background: var(--vip-gradient);
-            box-shadow: 0 0 35px rgba(245,175,25,0.55);
+
+        .sidebar-header.vip { background: var(--vip-gradient); }
+
+        .avatar {
+            width: 78px; height: 78px; background: white;
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; margin: 0 auto 14px;
+            font-size: 2.4em;
         }
-        .sidebar-header .avatar {
-            width: 78px; height: 78px; background: white; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 14px; font-size: 2.4em; font-weight: 900; color: #667eea;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+
+        .role-badge {
+            display: inline-block; padding: 5px 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px; font-size: 0.85em; font-weight: 600;
         }
-        .sidebar-header.vip .avatar { background: white; color: var(--warning); }
-        .sidebar-header h3 { font-size: 1.28em; margin-bottom: 6px; font-weight: 800; }
-        .sidebar-header .role-badge {
-            display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.22);
-            border-radius: 22px; font-size: 0.83em; font-weight: 700;
-        }
-        
+
         .nav-menu { list-style: none; }
         .nav-item { margin-bottom: 7px; }
         .nav-link {
-            display: flex; align-items: center; gap: 14px; padding: 14px 20px;
-            color: var(--text-secondary); text-decoration: none; border-radius: 14px;
-            transition: var(--transition); cursor: pointer; font-weight: 650;
-            font-size: 0.98em;
+            display: flex; align-items: center; gap: 14px;
+            padding: 14px 20px; color: var(--text-secondary);
+            text-decoration: none; border-radius: 14px;
+            cursor: pointer; transition: all 0.3s;
         }
-        .nav-link:hover, .nav-link.active {             background: rgba(102,126,234,0.15); color: var(--text-primary); 
-            transform: translateX(4px);
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(102,126,234,0.15);
+            color: white;
         }
-        .nav-link i { font-size: 1.25em; width: 24px; text-align: center; }
-        .nav-link.active { background: var(--primary-gradient); color: white; transform: translateX(4px); }
-        .nav-link.vip { background: var(--vip-gradient); color: white; }
-        .nav-link.vip i { color: white; }
+
+        .nav-link.active { background: var(--primary-gradient); }        .nav-link.vip { background: var(--vip-gradient); }
 
         .main-content { min-height: calc(100vh - 50px); }
-        .page-header { margin-bottom: 28px; padding-bottom: 18px; border-bottom: var(--glass-border); }
-        .page-header h2 { font-size: 1.95em; font-weight: 900; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
-        .page-header p { color: var(--text-secondary); font-size: 1.05em; }
 
-        /* Stats Cards */
-        .stats-grid { 
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
-            gap: 18px; margin-bottom: 28px; 
+        .page-header {
+            margin-bottom: 28px; padding-bottom: 18px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
+
+        .page-header h2 { font-size: 1.9em; font-weight: 900; margin-bottom: 8px; }
+        .page-header p { color: var(--text-secondary); }
+
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px; margin-bottom: 28px;
+        }
+
         .stat-card {
-            background: var(--card-bg); backdrop-filter: blur(12px);
-            border: var(--glass-border); border-radius: var(--border-radius);
-            padding: 22px; display: flex; align-items: center; gap: 18px; 
-            transition: var(--transition);
+            background: var(--card-bg); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px; padding: 22px;
+            display: flex; align-items: center; gap: 18px;
         }
-        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 18px 45px rgba(0,0,0,0.35); }
-        .stat-card.vip {
-            border: 2px solid var(--warning);
-            background: linear-gradient(135deg, rgba(245,175,25,0.12) 0%, rgba(241,39,17,0.12) 100%);
-        }
+
         .stat-icon {
-            width: 68px; height: 68px; border-radius: 16px; display: flex;
-            align-items: center; justify-content: center; font-size: 1.9em;
-            flex-shrink: 0;
+            width: 68px; height: 68px; border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.9em;
         }
-        .stat-icon.blue { background: rgba(59,130,246,0.22); color: #60a5fa; }
-        .stat-icon.green { background: rgba(16,185,129,0.22); color: #34d399; }
-        .stat-icon.purple { background: rgba(139,92,246,0.22); color: #a78bfa; }
-        .stat-icon.orange { background: rgba(245,158,11,0.22); color: #fbbf24; }
+
+        .stat-icon.blue { background: rgba(59,130,246,0.2); color: #60a5fa; }
+        .stat-icon.green { background: rgba(16,185,129,0.2); color: #34d399; }
+        .stat-icon.purple { background: rgba(139,92,246,0.2); color: #a78bfa; }
         .stat-icon.vip { background: var(--vip-gradient); color: white; }
-        .stat-icon.red { background: rgba(239,68,68,0.22); color: #f87171; }
-        .stat-info h4 { font-size: 0.88em; color: var(--text-secondary); margin-bottom: 4px; font-weight: 600; }
-        .stat-info .value { font-size: 1.9em; font-weight: 900; line-height: 1.1; }
-        .stat-info .sub-value { font-size: 0.85em; color: var(--text-secondary); margin-top: 3px; }
 
-        /* Content Grid */
-        .content-grid { 
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); 
-            gap: 24px; 
-        }
-        .section-title {             font-size: 1.38em; font-weight: 900; margin-bottom: 18px; 
-            display: flex; align-items: center; gap: 10px; padding-bottom: 12px;
-            border-bottom: var(--glass-border);
-        }
-        .section-title i { color: var(--info); }
+        .stat-info h4 { font-size: 0.88em; color: var(--text-secondary); }
+        .stat-info .value { font-size: 1.9em; font-weight: 900; }
 
-        /* Leaderboard */
-        .leaderboard-list { display: flex; flex-direction: column; gap: 11px; max-height: 500px; overflow-y: auto; padding-right: 5px; }
-        .leaderboard-list::-webkit-scrollbar { width: 6px; }
-        .leaderboard-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
-        .leaderboard-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
-        
+        .content-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 24px;
+        }
+
+        .section-title {
+            font-size: 1.38em; font-weight: 900; margin-bottom: 18px;
+            display: flex; align-items: center; gap: 10px;
+            padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .page-section { display: none; }
+        .page-section.active { display: block; animation: fadeIn 0.4s ease; }
+        .leaderboard-list { display: flex; flex-direction: column; gap: 11px; }
         .leader-item {
-            display: flex; align-items: center; gap: 14px; padding: 16px 18px;
-            background: rgba(255,255,255,0.04); border-radius: 14px;
-            border: 1px solid rgba(255,255,255,0.06); transition: var(--transition);
+            display: flex; align-items: center; gap: 14px;
+            padding: 16px 18px; background: rgba(255,255,255,0.04);
+            border-radius: 14px; border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.3s;
         }
-        .leader-item:hover { background: rgba(255,255,255,0.08); transform: translateX(-4px); }
-        .leader-item.top-1 { 
-            background: linear-gradient(135deg, rgba(255,215,0,0.18), rgba(255,215,0,0.06)); 
-            border-color: rgba(255,215,0,0.35); 
+
+        .leader-item:hover {
+            background: rgba(255,255,255,0.08);
+            transform: translateX(-4px);
         }
-        .leader-item.banned { opacity: 0.65; border-left: 3px solid var(--danger); }
-        .leader-item.muted { border-left: 3px solid var(--warning); }
-        
+
+        .leader-item.top-1 {
+            background: linear-gradient(135deg, rgba(255,215,0,0.18), rgba(255,215,0,0.06));
+            border-color: rgba(255,215,0,0.35);
+        }
+
         .rank {
-            width: 38px; height: 38px; border-radius: 10px; display: flex;
-            align-items: center; justify-content: center; font-weight: 900; 
-            font-size: 1.15em; flex-shrink: 0;
+            width: 38px; height: 38px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1.15em;
         }
+
         .rank.gold { background: var(--gold-gradient); color: #1a1a2e; }
         .rank.silver { background: linear-gradient(135deg, #c0c0c0, #e8e8e8); color: #1a1a2e; }
         .rank.bronze { background: linear-gradient(135deg, #cd7f32, #d4a76a); color: #1a1a2e; }
         .rank.normal { background: rgba(255,255,255,0.12); }
-        
-        .player-info { flex: 1; min-width: 0; }
+
+        .player-info { flex: 1; }
         .player-info .name { font-weight: 750; margin-bottom: 3px; display: flex; align-items: center; gap: 6px; }
-        .player-info .name .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); }
-        .player-info .name .status-dot.offline { background: var(--text-secondary); }
-        .player-info .meta { font-size: 0.83em; color: var(--text-secondary); display: flex; gap: 12px; }
+        .player-info .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); }
+        .player-info .status-dot.offline { background: var(--text-secondary); }
+        .player-info .meta { font-size: 0.83em; color: var(--text-secondary); }
         .player-score {
             font-size: 1.45em; font-weight: 900; background: var(--accent-gradient);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            min-width: 60px; text-align: left;
         }
-        .player-actions { display: flex; gap: 6px; }
-        .action-btn {
-            width: 32px; height: 32px; border-radius: 8px; border: none;
-            background: rgba(255,255,255,0.1); color: var(--text-primary);
-            cursor: pointer; display: flex; align-items: center; justify-content: center;            font-size: 0.9em; transition: var(--transition);
-        }
-        .action-btn:hover { background: var(--info); }
-        .action-btn.danger:hover { background: var(--danger); }
-        .action-btn.warning:hover { background: var(--warning); }
-
-        /* Control Panel */
-        .control-panel { 
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); 
-            gap: 14px; 
-        }
-        .control-btn {
-            padding: 18px 16px; border: 2px solid rgba(255,255,255,0.12);
-            background: rgba(255,255,255,0.04); border-radius: 16px; 
-            color: var(--text-primary); font-weight: 700; cursor: pointer; 
-            transition: var(--transition); display: flex; flex-direction: column; 
-            align-items: center; gap: 10px; font-size: 0.93em;
-        }
-        .control-btn i { font-size: 1.9em; }
-        .control-btn:hover { 
-            background: rgba(255,255,255,0.1); border-color: var(--info); 
-            transform: translateY(-3px); 
-        }
-        .control-btn.primary { background: var(--primary-gradient); border-color: transparent; }
-        .control-btn.vip { background: var(--vip-gradient); border-color: transparent; }
-        .control-btn.danger { border-color: var(--danger); }
-        .control-btn.danger:hover { background: rgba(239,68,68,0.15); }
-        .control-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
         /* Chat */
         .chat-container { height: 420px; display: flex; flex-direction: column; }
         .chat-messages {
-            flex: 1; overflow-y: auto; padding: 14px; background: rgba(0,0,0,0.22);
-            border-radius: 14px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 12px;
+            flex: 1; overflow-y: auto; padding: 14px;
+            background: rgba(0,0,0,0.22); border-radius: 14px;
+            margin-bottom: 14px; display: flex; flex-direction: column; gap: 12px;
         }
-        .chat-messages::-webkit-scrollbar { width: 6px; }
-        .chat-messages::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
-        .chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
-        
+
         .chat-message { animation: slideIn 0.3s ease; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
+        @keyframes slideIn {            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .chat-message .header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
         .chat-message .sender { font-weight: 750; font-size: 0.95em; }
         .chat-message .sender.admin { color: var(--warning); }
@@ -341,157 +352,143 @@
         .chat-message .text {
             padding: 11px 16px; background: rgba(255,255,255,0.07);
             border-radius: 14px; display: inline-block; max-width: 90%;
-            line-height: 1.5; word-wrap: break-word;        }
-        .chat-message.own .text { background: var(--primary-gradient); }
-        
+        }
+
         .chat-input-wrapper { display: flex; gap: 10px; }
         .chat-input-wrapper input {
             flex: 1; padding: 14px 18px; background: rgba(255,255,255,0.07);
             border: 2px solid rgba(255,255,255,0.12); border-radius: 14px;
-            color: var(--text-primary); outline: none; font-size: 1em;
-            transition: var(--transition);
+            color: white; outline: none; font-size: 1em;
         }
+
         .chat-input-wrapper input:focus { border-color: var(--info); background: rgba(255,255,255,0.1); }
-        .chat-input-wrapper input:disabled { opacity: 0.6; cursor: not-allowed; }
         .chat-input-wrapper button {
             padding: 14px 24px; background: var(--primary-gradient); border: none;
             border-radius: 14px; color: white; font-weight: 700; cursor: pointer;
-            transition: var(--transition); display: flex; align-items: center; gap: 8px;
         }
-        .chat-input-wrapper button:hover { transform: translateY(-2px); }
-        .chat-input-wrapper button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
         /* Tables */
         .data-table { width: 100%; border-collapse: collapse; }
         .data-table th {
-            text-align: right; padding: 14px 16px; background: rgba(255,255,255,0.06);
-            font-weight: 700; color: var(--text-secondary); border-bottom: var(--glass-border);
-            font-size: 0.9em;
+            text-align: right; padding: 14px 16px;
+            background: rgba(255,255,255,0.06);
+            font-weight: 700; color: var(--text-secondary);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
+
         .data-table td {
-            padding: 14px 16px; border-bottom: var(--glass-border);
-            font-size: 0.95em;
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
+
         .data-table tr:hover { background: rgba(255,255,255,0.04); }
-        .data-table .badge {
-            padding: 4px 12px; border-radius: 20px; font-size: 0.8em; font-weight: 600;
-            display: inline-block;
+
+        .badge {
+            padding: 4px 12px; border-radius: 20px;
+            font-size: 0.8em; font-weight: 600; display: inline-block;
         }
+
         .badge.online { background: rgba(16,185,129,0.2); color: #34d399; }
         .badge.offline { background: rgba(148,163,184,0.2); color: #94a3b8; }
-        .badge.banned { background: rgba(239,68,68,0.2); color: #f87171; }
-        .badge.muted { background: rgba(245,158,11,0.2); color: #fbbf24; }
-        .badge.vip { background: var(--vip-gradient); color: white; }
+        .badge.banned { background: rgba(239,68,68,0.2); color: #f87171; }        .badge.muted { background: rgba(245,158,11,0.2); color: #fbbf24; }
 
-        /* Forms */
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 650; }
-        .form-input {
-            width: 100%; padding: 13px 16px; background: rgba(255,255,255,0.07);
-            border: 2px solid rgba(255,255,255,0.12); border-radius: 12px;
-            color: var(--text-primary); font-size: 1em; outline: none;
-            transition: var(--transition);        }
-        .form-input:focus { border-color: var(--info); background: rgba(255,255,255,0.1); }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        /* Loading */
+        .loading {
+            text-align: center; padding: 40px;
+            color: var(--text-secondary);
+        }
 
-        /* Page Sections */
-        .page-section { display: none; animation: fadeIn 0.4s ease; }
-        .page-section.active { display: block; }
+        .loading i {
+            font-size: 2.5em; margin-bottom: 15px;
+            animation: spin 1s linear infinite;
+        }
 
-        /* Toast Notifications */
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .empty-state {
+            text-align: center; padding: 50px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i { font-size: 3em; margin-bottom: 18px; opacity: 0.5; }
+
+        /* Toast */
         .toast-container {
-            position: fixed; top: 25px; left: 50%; transform: translateX(-50%);
-            z-index: 9999; display: flex; flex-direction: column; gap: 10px;
+            position: fixed; top: 25px; left: 50%;
+            transform: translateX(-50%); z-index: 9999;
+            display: flex; flex-direction: column; gap: 10px;
             max-width: 450px; width: calc(100% - 40px);
         }
+
         .toast {
-            padding: 15px 26px; border-radius: 14px; font-weight: 650;
-            backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2);
-            animation: slideDown 0.4s ease; box-shadow: 0 12px 45px rgba(0,0,0,0.45);
-            display: flex; align-items: center; gap: 11px; font-size: 0.95em;
+            padding: 15px 26px; border-radius: 14px;
+            font-weight: 650; backdrop-filter: blur(10px);
+            animation: slideDown 0.4s ease;
+            display: flex; align-items: center; gap: 11px;
         }
-        @keyframes slideDown { 
-            from { transform: translateY(-120px); opacity: 0; } 
-            to { transform: translateY(0); opacity: 1; } 
+
+        @keyframes slideDown {
+            from { transform: translateY(-100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
-        .toast.success { background: rgba(16,185,129,0.96); }
-        .toast.error { background: rgba(239,68,68,0.96); }
-        .toast.warning { background: rgba(245,158,11,0.96); }
-        .toast.info { background: rgba(59,130,246,0.96); }
+
+        .toast.success { background: rgba(16,185,129,0.95); }
+        .toast.error { background: rgba(239,68,68,0.95); }
+        .toast.warning { background: rgba(245,158,11,0.95); }
+        .toast.info { background: rgba(59,130,246,0.95); }
         .toast.vip { background: var(--vip-gradient); }
 
-        /* Loading & Empty States */
-        .loading { text-align: center; padding: 40px; color: var(--text-secondary); }
-        .loading i { font-size: 2.5em; margin-bottom: 15px; animation: spin 1s linear infinite; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        
-        .empty-state { text-align: center; padding: 50px 20px; color: var(--text-secondary); }
-        .empty-state i { font-size: 3em; margin-bottom: 18px; opacity: 0.5; }
-        .empty-state p { font-size: 1.1em; }
-
-        /* Registration Modal */
-        .reg-modal {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.94);
-            z-index: 10001; align-items: center; justify-content: center;
-            padding: 20px; backdrop-filter: blur(12px);
-        }
-        .reg-modal.active { display: flex; }
-        .reg-modal-content {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border-radius: var(--border-radius); padding: 40px;
-            max-width: 420px; width: 100%; border: 2px solid var(--info);            text-align: center; animation: modalSlide 0.35s ease;
-        }
-        .reg-modal-content .icon {
-            width: 70px; height: 70px; background: var(--accent-gradient);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 22px; font-size: 2.2em;
-        }
-        .reg-modal-content h2 { font-size: 1.7em; margin-bottom: 12px; font-weight: 900; }
-        .reg-modal-content p { color: var(--text-secondary); margin-bottom: 26px; }
-
-        /* Responsive */
-        @media (max-width: 1100px) {
-            .dashboard { grid-template-columns: 1fr; }
-            .sidebar { position: relative; top: 0; height: auto; max-height: none; }
-            .content-grid { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 768px) {
-            .stats-grid { grid-template-columns: 1fr; }
-            .control-panel { grid-template-columns: 1fr; }
-            .form-row { grid-template-columns: 1fr; }
-            .vip-login-btn { bottom: 20px; left: 20px; padding: 12px 22px; font-size: 0.95em; }
-            .page-header h2 { font-size: 1.7em; }
+        /* Control Panel */
+        .control-panel {            display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 14px;
         }
 
-        /* Utility Classes */
+        .control-btn {
+            padding: 18px 16px; border: 2px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.04); border-radius: 16px;
+            color: white; font-weight: 700; cursor: pointer;
+            transition: all 0.3s; display: flex; flex-direction: column;
+            align-items: center; gap: 10px;
+        }
+
+        .control-btn i { font-size: 1.9em; }
+        .control-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--info); transform: translateY(-3px);
+        }
+
+        .control-btn.primary { background: var(--primary-gradient); border-color: transparent; }
+        .control-btn.vip { background: var(--vip-gradient); border-color: transparent; }
+        .control-btn.danger { border-color: var(--danger); }
+
+        .hidden { display: none !important; }
         .text-center { text-align: center; }
         .mt-2 { margin-top: 16px; }
         .mb-2 { margin-bottom: 16px; }
-        .hidden { display: none !important; }
-        .flex { display: flex; }
-        .items-center { align-items: center; }
-        .justify-between { justify-content: space-between; }
-        .gap-2 { gap: 12px; }
-        .text-success { color: var(--success); }
-        .text-danger { color: var(--danger); }
-        .text-warning { color: var(--warning); }
-        .font-bold { font-weight: 700; }
-        .cursor-pointer { cursor: pointer; }
+
+        @media (max-width: 1100px) {
+            .dashboard { grid-template-columns: 1fr; }
+            .sidebar { position: relative; top: 0; height: auto; }
+            .content-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .vip-login-btn { bottom: 20px; left: 20px; padding: 12px 22px; font-size: 0.95em; }
+        }
     </style>
 </head>
 <body>
     <div class="bg-animation"></div>
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- Registration Modal (First Time) -->
+    <!-- Registration Modal -->
     <div class="reg-modal" id="regModal">
-        <div class="reg-modal-content">
-            <div class="icon">🎮</div>
+        <div class="reg-content">
+            <div class="reg-icon">🎮</div>
             <h2>مرحباً بك!</h2>
-            <p>يرجى إدخال اسمك للبدء في اللعبة</p>            <div class="form-group">
-                <input type="text" id="regUsername" class="form-input" placeholder="أدخل اسمك هنا..." maxlength="20" onkeypress="if(event.key==='Enter')registerUser()">
-            </div>
-            <button class="vip-btn" onclick="registerUser()" style="background: var(--accent-gradient);">
+            <p>يرجى إدخال اسمك للبدء في اللعبة</p>
+            <input type="text" id="regUsername" class="form-input" placeholder="أدخل اسمك هنا..." maxlength="20">            <button class="btn-primary" onclick="registerUser()">
                 <i class="fas fa-play"></i> ابدأ اللعب
             </button>
             <p style="margin-top: 20px; font-size: 0.85em; color: var(--text-secondary);">
@@ -500,28 +497,22 @@
         </div>
     </div>
 
-    <!-- VIP Login Button -->
-    <button class="vip-login-btn" onclick="openVIPModal()">
-        <i class="fas fa-crown"></i>
-        <span>LOGIN VIP</span>
-    </button>
-
     <!-- VIP Modal -->
     <div class="vip-modal" id="vipModal">
         <div class="vip-modal-content">
             <button class="vip-close" onclick="closeVIPModal()"><i class="fas fa-times"></i></button>
             <div class="vip-modal-header">
                 <div class="vip-icon">👑</div>
-                <h2>تسجيل الدخول كمسؤول</h2>
+                <h2>تسجيل الدخول VIP</h2>
                 <p>أدخل بيانات المسؤول للوصول للوحة التحكم</p>
             </div>
             <div class="vip-input-group">
                 <label><i class="fas fa-user"></i> اسم المستخدم</label>
-                <input type="text" id="vipUsername" class="vip-input-field" placeholder="admin">
+                <input type="text" id="vipUsername" class="vip-input-field" placeholder="أدخل اسم المستخدم">
             </div>
             <div class="vip-input-group">
                 <label><i class="fas fa-lock"></i> كلمة المرور</label>
-                <input type="password" id="vipPassword" class="vip-input-field" placeholder="••••••••" onkeypress="if(event.key==='Enter')verifyVIP()">
+                <input type="password" id="vipPassword" class="vip-input-field" placeholder="أدخل كلمة المرور" onkeypress="if(event.key==='Enter')verifyVIP()">
             </div>
             <button class="vip-btn" id="vipBtn" onclick="verifyVIP()">
                 <i class="fas fa-sign-in-alt"></i> دخول كمسؤول
@@ -530,14 +521,14 @@
     </div>
 
     <div class="app-container">
-        <!-- Dashboard -->
-        <div id="dashboard" class="dashboard">
+        <div class="dashboard">
             <!-- Sidebar -->
             <aside class="sidebar glass-card">
                 <div class="sidebar-header" id="sidebarHeader">
                     <div class="avatar" id="sidebarAvatar">👤</div>
                     <h3 id="sidebarName">جاري التحميل...</h3>
-                    <span class="role-badge" id="sidebarRole">⏳</span>                </div>
+                    <span class="role-badge" id="sidebarRole">⏳</span>
+                </div>
 
                 <ul class="nav-menu">
                     <li class="nav-item">
@@ -546,8 +537,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" onclick="showPage('leaderboard')">
-                            <i class="fas fa-trophy"></i><span>المتصدرين</span>
+                        <a class="nav-link" onclick="showPage('leaderboard')">                            <i class="fas fa-trophy"></i><span>المتصدرين</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -555,16 +545,9 @@
                             <i class="fas fa-comments"></i><span>الدردشة</span>
                         </a>
                     </li>
-                    <li class="nav-item" id="navStats">
+                    <li class="nav-item">
                         <a class="nav-link" onclick="showPage('stats')">
                             <i class="fas fa-chart-bar"></i><span>إحصائياتي</span>
-                        </a>
-                    </li>
-                    
-                    <!-- Admin Sections (Hidden by Default) -->
-                    <li class="nav-item admin-only hidden" id="navRegistrations">
-                        <a class="nav-link vip" onclick="showPage('registrations')">
-                            <i class="fas fa-user-plus"></i><span>التسجيلات الجديدة</span>
                         </a>
                     </li>
                     <li class="nav-item admin-only hidden" id="navPlayers">
@@ -582,18 +565,9 @@
                             <i class="fas fa-gavel"></i><span>الحظر/الكتم</span>
                         </a>
                     </li>
-                    <li class="nav-item admin-only hidden" id="navAllStats">
-                        <a class="nav-link vip" onclick="showPage('allStats')">
-                            <i class="fas fa-chart-pie"></i><span>إحصائيات الجميع</span>
-                        </a>
-                    </li>                    <li class="nav-item admin-only hidden" id="navSiteControl">
+                    <li class="nav-item admin-only hidden" id="navSiteControl">
                         <a class="nav-link vip" onclick="showPage('siteControl')">
                             <i class="fas fa-server"></i><span>تحكم بالموقع</span>
-                        </a>
-                    </li>
-                    <li class="nav-item admin-only hidden" id="navProtection">
-                        <a class="nav-link vip" onclick="showPage('protection')">
-                            <i class="fas fa-shield-alt"></i><span>الحماية</span>
                         </a>
                     </li>
                 </ul>
@@ -601,7 +575,7 @@
 
             <!-- Main Content -->
             <main class="main-content">
-                <!-- Overview Page -->
+                <!-- Overview -->
                 <section id="page-overview" class="page-section active">
                     <div class="page-header">
                         <h2>🎮 لعبة الحروف الاحترافية</h2>
@@ -612,9 +586,7 @@
                         <div class="stat-card">
                             <div class="stat-icon blue"><i class="fas fa-user"></i></div>
                             <div class="stat-info">
-                                <h4>حالتك</h4>
-                                <div class="value" id="userStatus">جاري التحميل...</div>
-                                <div class="sub-value" id="userFingerprint">...</div>
+                                <h4>حالتك</h4>                                <div class="value" id="userStatus">جاري التحميل...</div>
                             </div>
                         </div>
                         <div class="stat-card">
@@ -622,7 +594,6 @@
                             <div class="stat-info">
                                 <h4>نقاطك</h4>
                                 <div class="value" id="userScore">0</div>
-                                <div class="sub-value">المرتبة: <span id="userRank">-</span></div>
                             </div>
                         </div>
                         <div class="stat-card" id="vipStatCard" style="display:none;">
@@ -630,14 +601,13 @@
                             <div class="stat-info">
                                 <h4>الصلاحية</h4>
                                 <div class="value" style="color: var(--warning);">VIP 👑</div>
-                                <div class="sub-value">صلاحيات كاملة</div>
                             </div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-icon purple"><i class="fas fa-users"></i></div>
-                            <div class="stat-info">                                <h4>متصلون الآن</h4>
+                            <div class="stat-info">
+                                <h4>متصلون الآن</h4>
                                 <div class="value" id="onlineCount">0</div>
-                                <div class="sub-value">لاعب</div>
                             </div>
                         </div>
                     </div>
@@ -646,25 +616,26 @@
                         <div class="glass-card">
                             <h3 class="section-title"><i class="fas fa-trophy"></i> أفضل 5 لاعبين</h3>
                             <div class="leaderboard-list" id="topPlayers">
-                                <div class="loading"><i class="fas fa-spinner"></i><p>جاري تحميل البيانات...</p></div>
+                                <div class="loading"><i class="fas fa-spinner"></i><p>جاري التحميل...</p></div>
                             </div>
                         </div>
 
                         <div class="glass-card">
                             <h3 class="section-title"><i class="fas fa-info-circle"></i> طريقة اللعب</h3>
-                            <div style="padding: 18px; line-height: 2; font-size: 0.95em;">
-                                <p><i class="fas fa-check-circle text-success"></i> <strong>كلاعب:</strong> سجل اسمك وابدأ اللعب فوراً</p>
-                                <p><i class="fas fa-check-circle text-success"></i> <strong>كزائر:</strong> شاهد اللاعبين وتفاعل في الدردشة</p>
-                                <p><i class="fas fa-check-circle text-success"></i> <strong>كـ VIP:</strong> تحكم كامل في الموقع واللاعبين</p>
-                                <p class="mt-2" style="color: var(--warning);"><i class="fas fa-exclamation-triangle"></i> يتم حفظ بصمة جهازك لمنع التلاعب</p>
+                            <div style="padding: 18px; line-height: 2;">
+                                <p>✅ <strong>كلاعب:</strong> سجل اسمك وابدأ اللعب فوراً</p>
+                                <p>✅ <strong>كزائر:</strong> شاهد اللاعبين وتفاعل في الدردشة</p>
+                                <p>✅ <strong>كـ VIP:</strong> تحكم كامل في الموقع واللاعبين</p>
+                                <p class="mt-2" style="color: var(--warning);">
+                                    ⚠️ يتم حفظ بصمة جهازك لمنع التلاعب
+                                </p>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Leaderboard Page -->
-                <section id="page-leaderboard" class="page-section">
-                    <div class="page-header">
+                <!-- Leaderboard -->
+                <section id="page-leaderboard" class="page-section">                    <div class="page-header">
                         <h2>🏆 لوحة المتصدرين</h2>
                         <p>ترتيب اللاعبين حسب النقاط</p>
                     </div>
@@ -675,114 +646,55 @@
                     </div>
                 </section>
 
-                <!-- Chat Page -->
+                <!-- Chat -->
                 <section id="page-chat" class="page-section">
                     <div class="page-header">
                         <h2>💬 الدردشة العامة</h2>
-                        <p id="chatStatus">تواصل مع اللاعبين الآخرين</p>
+                        <p>تواصل مع اللاعبين الآخرين</p>
                     </div>
                     <div class="glass-card">
                         <div class="chat-container">
                             <div class="chat-messages" id="chatMessages">
-                                <div class="loading"><i class="fas fa-spinner"></i><p>جاري تحميل المحادثات...</p></div>                            </div>
+                                <div class="loading"><i class="fas fa-spinner"></i><p>جاري التحميل...</p></div>
+                            </div>
                             <div class="chat-input-wrapper">
-                                <input type="text" id="chatInput" placeholder="اكتب رسالتك... (اضغط Enter للإرسال)" disabled>
+                                <input type="text" id="chatInput" placeholder="اكتب رسالتك..." disabled>
                                 <button onclick="sendChat()" id="chatSendBtn" disabled>
                                     <i class="fas fa-paper-plane"></i> إرسال
                                 </button>
                             </div>
-                            <p id="chatDisabledMsg" class="text-center text-warning mt-2 hidden">
-                                <i class="fas fa-microphone-slash"></i> تم كتمك من قبل المسؤول - يمكنك المشاهدة فقط
+                            <p id="chatDisabledMsg" class="text-center mt-2 hidden" style="color: var(--warning);">
+                                <i class="fas fa-microphone-slash"></i> تم كتمك من قبل المسؤول
                             </p>
                         </div>
                     </div>
                 </section>
 
-                <!-- User Stats Page -->
+                <!-- Stats -->
                 <section id="page-stats" class="page-section">
                     <div class="page-header">
                         <h2>📊 إحصائياتي</h2>
                         <p>تتبع تقدمك في اللعبة</p>
                     </div>
-                    <div class="glass-card">
-                        <div id="userStatsContent">
-                            <div class="loading"><i class="fas fa-spinner"></i><p>جاري تحميل الإحصائيات...</p></div>
-                        </div>
+                    <div class="glass-card" id="userStatsContent">
+                        <div class="loading"><i class="fas fa-spinner"></i><p>جاري التحميل...</p></div>
                     </div>
                 </section>
 
-                <!-- Admin: Registrations Page -->
-                <section id="page-registrations" class="page-section admin-only">
-                    <div class="page-header">
-                        <h2>👥 التسجيلات الجديدة</h2>
-                        <p>إدارة اللاعبين المسجلين حديثاً</p>
-                    </div>
-                    <div class="glass-card">
-                        <div class="form-row mb-2">
-                            <input type="text" id="searchReg" class="form-input" placeholder="🔍 بحث عن لاعب..." oninput="filterRegistrations()">
-                            <select id="filterReg" class="form-input" onchange="filterRegistrations()">
-                                <option value="all">الكل</option>
-                                <option value="online">متصلون</option>
-                                <option value="offline">غير متصلين</option>
-                                <option value="banned">محظورون</option>
-                            </select>
-                        </div>
-                        <div style="overflow-x: auto;">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>اللاعب</th>
-                                        <th>البصمة</th>
-                                        <th>التسجيل</th>                                        <th>آخر ظهور</th>
-                                        <th>الحالة</th>
-                                        <th>إجراءات</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="registrationsTable">
-                                    <tr><td colspan="6" class="text-center"><div class="loading"><i class="fas fa-spinner"></i></div></td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Admin: Players Page -->
+                <!-- Admin: Players -->
                 <section id="page-players" class="page-section admin-only">
                     <div class="page-header">
-                        <h2>👤 إدارة اللاعبين</h2>
-                        <p>مراقبة اللاعبين المتصلين حالياً</p>
+                        <h2>👥 إدارة اللاعبين</h2>                        <p>مراقبة اللاعبين المتصلين حالياً</p>
                     </div>
                     <div class="glass-card">
-                        <div class="stats-grid">
-                            <div class="stat-card">
-                                <div class="stat-icon green"><i class="fas fa-wifi"></i></div>
-                                <div class="stat-info">
-                                    <h4>متصلون</h4>
-                                    <div class="value" id="adminOnlineCount">0</div>
-                                </div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-icon orange"><i class="fas fa-user-clock"></i></div>
-                                <div class="stat-info">
-                                    <h4>خاملون</h4>
-                                    <div class="value" id="adminIdleCount">0</div>
-                                </div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-icon red"><i class="fas fa-user-slash"></i></div>
-                                <div class="stat-info">
-                                    <h4>محظورون</h4>
-                                    <div class="value" id="adminBannedCount">0</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="leaderboard-list" id="adminPlayersList" style="max-height: 450px;">
-                            <div class="loading"><i class="fas fa-spinner"></i><p>جاري تحميل اللاعبين...</p></div>
+                        <div class="leaderboard-list" id="adminPlayersList">
+                            <div class="loading"><i class="fas fa-spinner"></i><p>جاري التحميل...</p></div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Admin: Visitors Page -->                <section id="page-visitors" class="page-section admin-only">
+                <!-- Admin: Visitors -->
+                <section id="page-visitors" class="page-section admin-only">
                     <div class="page-header">
                         <h2>👁️ سجل الزوار</h2>
                         <p>تتبع دخول المستخدمين للموقع</p>
@@ -793,94 +705,46 @@
                                 <thead>
                                     <tr>
                                         <th>اللاعب</th>
-                                        <th>البصمة</th>
                                         <th>وقت الدخول</th>
                                         <th>آخر نشاط</th>
-                                        <th>الجهاز/المتصفح</th>
                                         <th>الحالة</th>
                                     </tr>
                                 </thead>
                                 <tbody id="visitorsTable">
-                                    <tr><td colspan="6" class="text-center"><div class="loading"><i class="fas fa-spinner"></i></div></td></tr>
+                                    <tr><td colspan="4" class="text-center"><div class="loading"><i class="fas fa-spinner"></i></div></td></tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </section>
 
-                <!-- Admin: Moderation Page -->
+                <!-- Admin: Moderation -->
                 <section id="page-moderation" class="page-section admin-only">
                     <div class="page-header">
                         <h2>⚖️ لوحة التحكم</h2>
                         <p>إدارة الحظر والكتم للاعبين</p>
                     </div>
                     <div class="glass-card">
-                        <div class="form-row mb-2">
-                            <input type="text" id="searchMod" class="form-input" placeholder="🔍 بحث عن لاعب..." oninput="filterModeration()">
-                            <select id="filterMod" class="form-input" onchange="filterModeration()">
-                                <option value="all">الكل</option>
-                                <option value="banned">محظورون</option>
-                                <option value="muted">مكتومون</option>
-                                <option value="normal">عاديون</option>
-                            </select>
-                        </div>
                         <div style="overflow-x: auto;">
                             <table class="data-table">
                                 <thead>
                                     <tr>
                                         <th>اللاعب</th>
                                         <th>النقاط</th>
-                                        <th>الحالة الحالية</th>
-                                        <th>سبب الإجراء</th>                                        <th>تاريخ الإجراء</th>
+                                        <th>الحالة</th>
                                         <th>الإجراءات</th>
-                                    </tr>
-                                </thead>
+                                    </tr>                                </thead>
                                 <tbody id="moderationTable">
-                                    <tr><td colspan="6" class="text-center"><div class="loading"><i class="fas fa-spinner"></i></div></td></tr>
+                                    <tr><td colspan="4" class="text-center"><div class="loading"><i class="fas fa-spinner"></i></div></td></tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </section>
 
-                <!-- Admin: All Stats Page -->
-                <section id="page-allStats" class="page-section admin-only">
+                <!-- Admin: Site Control -->
+                <section id="page-siteControl" class="page-section admin-only">
                     <div class="page-header">
-                        <h2>📈 إحصائيات شاملة</h2>
-                        <p>تحليل أداء جميع اللاعبين</p>
-                    </div>
-                    <div class="glass-card">
-                        <div class="stats-grid">
-                            <div class="stat-card">
-                                <div class="stat-icon blue"><i class="fas fa-users"></i></div>
-                                <div class="stat-info">
-                                    <h4>إجمالي اللاعبين</h4>
-                                    <div class="value" id="totalPlayers">0</div>
-                                </div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-icon green"><i class="fas fa-trophy"></i></div>
-                                <div class="stat-info">
-                                    <h4>أعلى نقاط</h4>
-                                    <div class="value" id="topScore">0</div>
-                                </div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-icon purple"><i class="fas fa-gamepad"></i></div>
-                                <div class="stat-info">
-                                    <h4>مباريات اليوم</h4>
-                                    <div class="value" id="gamesToday">0</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="leaderboard-list" id="allStatsList">
-                            <div class="loading"><i class="fas fa-spinner"></i><p>جاري تحليل البيانات...</p></div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Admin: Site Control Page -->
-                <section id="page-siteControl" class="page-section admin-only">                    <div class="page-header">
                         <h2>⚙️ تحكم بالموقع</h2>
                         <p>إعدادات وتشغيل الموقع</p>
                     </div>
@@ -889,81 +753,9 @@
                             <button class="control-btn primary" id="siteToggleBtn" onclick="toggleSite()">
                                 <i class="fas fa-power-off"></i><span id="siteStatusText">الموقع: مفعل ✅</span>
                             </button>
-                            <button class="control-btn" onclick="showToast('🔄 جاري تحديث البيانات...', 'info')">
-                                <i class="fas fa-sync"></i><span>تحديث فوري</span>
+                            <button class="control-btn" onclick="location.reload()">
+                                <i class="fas fa-sync"></i><span>تحديث</span>
                             </button>
-                            <button class="control-btn warning" onclick="clearCache()">
-                                <i class="fas fa-trash"></i><span>مسح الكاش</span>
-                            </button>
-                            <button class="control-btn" onclick="showToast('📊 تصدير البيانات...', 'info')">
-                                <i class="fas fa-download"></i><span>تصدير CSV</span>
-                            </button>
-                        </div>
-                        
-                        <h3 class="section-title mt-2"><i class="fas fa-cog"></i> إعدادات الموقع</h3>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>رسالة الصيانة (تظهر عند تعطيل الموقع)</label>
-                                <input type="text" id="maintenanceMsg" class="form-input" value="الموقع تحت الصيانة - نعود قريباً!">
-                            </div>
-                            <div class="form-group">
-                                <label>الحد الأقصى للاعبين المتصلين</label>
-                                <input type="number" id="maxPlayers" class="form-input" value="100" min="10" max="1000">
-                            </div>
-                        </div>
-                        <button class="vip-btn" onclick="saveSiteSettings()" style="margin-top: 10px;">
-                            <i class="fas fa-save"></i> حفظ الإعدادات
-                        </button>
-                    </div>
-                </section>
-
-                <!-- Admin: Protection Page -->
-                <section id="page-protection" class="page-section admin-only">
-                    <div class="page-header">
-                        <h2>🛡️ نظام الحماية</h2>
-                        <p>مراقبة محاولات الاختراق والتلاعب</p>
-                    </div>
-                    <div class="glass-card">
-                        <div class="stats-grid">
-                            <div class="stat-card">
-                                <div class="stat-icon red"><i class="fas fa-exclamation-triangle"></i></div>
-                                <div class="stat-info">
-                                    <h4>محاولات مشبوهة</h4>
-                                    <div class="value" id="suspiciousCount">0</div>                                </div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-icon orange"><i class="fas fa-fingerprint"></i></div>
-                                <div class="stat-info">
-                                    <h4>بصمات مكررة</h4>
-                                    <div class="value" id="duplicateFingerprints">0</div>
-                                </div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-icon green"><i class="fas fa-shield-check"></i></div>
-                                <div class="stat-info">
-                                    <h4>محاولات محظورة</h4>
-                                    <div class="value" id="blockedAttempts">0</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <h3 class="section-title"><i class="fas fa-list"></i> سجل الحوادث الأمنية</h3>
-                        <div style="overflow-x: auto; max-height: 400px; overflow-y: auto;">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>الوقت</th>
-                                        <th>النوع</th>
-                                        <th>البصمة</th>
-                                        <th>اللاعب</th>
-                                        <th>التفاصيل</th>
-                                        <th>الإجراء</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="securityLog">
-                                    <tr><td colspan="6" class="text-center"><div class="loading"><i class="fas fa-spinner"></i></div></td></tr>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </section>
@@ -971,90 +763,62 @@
         </div>
     </div>
 
+    <!-- VIP Button -->
+    <button class="vip-login-btn" onclick="openVIPModal()">
+        <i class="fas fa-crown"></i>
+        <span>LOGIN VIP</span>
+    </button>
+
     <script>
-        // ============================================
-        // 🔧 CONFIGURATION - REPLACE WITH YOUR VALUES
-        // ============================================
+        // Configuration - REPLACE WITH YOUR VALUES
         const SUPABASE_URL = 'https://vtrwdcyjsnyvdtzisucv.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ0cndkY3lqc255dmR0emlzdWN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NTExODAsImV4cCI6MjA5NTUyNzE4MH0.p908XmhnvEGiixWDM04eBeXL1vxLLg-dsxCoQ8CMD1s';
-        const VIP_CREDENTIALS = {
-            username: 'admin',            password: 'vip2026' // ⚠️ Change this in production!
-        };
+        const VIP_RAW_URL = 'https://gist.githubusercontent.com/HABGIT286/675ff47c78ff90ac39a07f349b8af32e/raw/f7637e33256bc7497a7c6f193d952934e9435c55/SS';
 
-        // ============================================
-        // 🌐 GLOBAL VARIABLES & STATE
-        // ============================================
         let supabase;
         let currentUser = null;
         let deviceFingerprint = null;
         let isVip = false;
-        let isSiteEnabled = true;
-        let chatChannel, playersChannel, visitorsChannel;
         let heartbeatInterval;
 
-        // ============================================
-        // 🚀 INITIALIZATION
-        // ============================================
-        window.addEventListener('load', async () => {
-            try {
-                // Initialize Supabase
+        // Initialize
+        window.addEventListener('load', async () => {            try {
                 supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                 
-                // Get device fingerprint
-                await getDeviceFingerprint();
+                // Generate device fingerprint
+                deviceFingerprint = 'fp_' + btoa(navigator.userAgent + screen.width + screen.height + new Date().getTimezoneOffset()).substring(0, 32);
                 
-                // Check if user is already registered
+                // Check if user already registered
                 await checkUserRegistration();
                 
-                // Setup real-time subscriptions
+                // Setup realtime
                 setupRealtimeSubscriptions();
                 
-                // Start heartbeat for online status
+                // Start heartbeat
                 startHeartbeat();
                 
-                // Load initial data
+                // Load data
                 await loadOverviewData();
                 
                 showToast('🎮 تم تحميل اللعبة بنجاح!', 'success');
-                
             } catch (error) {
-                console.error('Initialization error:', error);
-                showToast('⚠️ حدث خطأ في التحميل - حاول تحديث الصفحة', 'error');
+                console.error('Init error:', error);
+                showToast('⚠️ حدث خطأ في التحميل', 'error');
             }
         });
 
-        // ============================================
-        // 🔐 DEVICE FINGERPRINTING
-        // ============================================
-        async function getDeviceFingerprint() {
-            try {                const tm = new ThumbmarkJS.Thumbmark({ timeout: 3000 });
-                const result = await tm.get();
-                deviceFingerprint = result.thumbmark;
-                console.log('Device fingerprint:', deviceFingerprint.substring(0, 20) + '...');
-                return deviceFingerprint;
-            } catch (error) {
-                console.error('Fingerprint error:', error);
-                // Fallback fingerprint
-                deviceFingerprint = 'fp_' + btoa(navigator.userAgent + screen.width + screen.height + new Date().getTimezoneOffset()).substring(0, 32);
-                return deviceFingerprint;
-            }
-        }
-
-        // ============================================
-        // 👤 USER REGISTRATION & AUTH
-        // ============================================
+        // Check User Registration
         async function checkUserRegistration() {
             const storedUser = localStorage.getItem('gameUser');
             const storedFp = localStorage.getItem('deviceFp');
             
             if (storedUser && storedFp === deviceFingerprint) {
-                // User already registered with this device
                 currentUser = JSON.parse(storedUser);
                 updateUIForUser();
                 return;
             }
             
-            // Check if fingerprint exists in database (different account on same device)
+            // Check database for existing fingerprint
             if (deviceFingerprint) {
                 const { data, error } = await supabase
                     .from('players')
@@ -1064,29 +828,24 @@
                     .single();
                 
                 if (data && !error) {
-                    // Found existing account with this fingerprint
                     currentUser = data;
                     localStorage.setItem('gameUser', JSON.stringify(data));
                     localStorage.setItem('deviceFp', deviceFingerprint);
-                    updateUIForUser();
-                    showToast('👋 مرحباً بعودتك، ' + data.name, 'success');
+                    updateUIForUser();                    showToast('👋 مرحباً بعودتك، ' + data.name, 'success');
                     return;
                 }
             }
             
-            // Show registration modal for new user
+            // Show registration modal
             document.getElementById('regModal').classList.add('active');
         }
+
+        // Register User
         async function registerUser() {
             const username = document.getElementById('regUsername').value.trim();
             
             if (!username || username.length < 2) {
                 showToast('⚠️ الاسم يجب أن يكون حرفين على الأقل', 'warning');
-                return;
-            }
-            
-            if (!deviceFingerprint) {
-                showToast('⚠️ جاري تحديد بصمة الجهاز...', 'info');
                 return;
             }
             
@@ -1099,11 +858,11 @@
                     .limit(1);
                 
                 if (existing && existing.length > 0) {
-                    showToast('⚠️ هذا الاسم مستخدم بالفعل، اختر اسماً آخر', 'warning');
+                    showToast('⚠️ هذا الاسم مستخدم بالفعل', 'warning');
                     return;
                 }
                 
-                // Create new player
+                // Create player
                 const newPlayer = {
                     name: username,
                     device_fingerprint: deviceFingerprint,
@@ -1121,30 +880,26 @@
                 const { data, error } = await supabase
                     .from('players')
                     .insert([newPlayer])
-                    .select()
-                    .single();
+                    .select()                    .single();
                 
                 if (error) throw error;
-                                // Save to local storage
+                
                 currentUser = data;
                 localStorage.setItem('gameUser', JSON.stringify(data));
                 localStorage.setItem('deviceFp', deviceFingerprint);
                 
-                // Close modal and update UI
                 document.getElementById('regModal').classList.remove('active');
                 updateUIForUser();
-                
-                // Record visitor entry
                 await recordVisitorEntry();
                 
-                showToast('🎉 أهلاً بك، ' + username + '! استمتع باللعب', 'success');
-                
+                showToast('🎉 أهلاً بك، ' + username + '!', 'success');
             } catch (error) {
                 console.error('Registration error:', error);
-                showToast('❌ فشل التسجيل - حاول مرة أخرى', 'error');
+                showToast('❌ فشل التسجيل', 'error');
             }
         }
 
+        // Record Visitor Entry
         async function recordVisitorEntry() {
             if (!currentUser || !deviceFingerprint) return;
             
@@ -1154,18 +909,14 @@
                     device_fingerprint: deviceFingerprint,
                     entered_at: new Date().toISOString(),
                     last_activity: new Date().toISOString(),
-                    user_agent: navigator.userAgent,
-                    screen_resolution: `${screen.width}x${screen.height}`,
-                    ip_hash: btoa((navigator.userAgent + new Date().getTime()).slice(0, 50)).substring(0, 32)
+                    user_agent: navigator.userAgent
                 }]);
             } catch (e) {
                 console.warn('Could not record visitor:', e);
             }
         }
 
-        // ============================================
-        // 👑 VIP ADMIN LOGIN
-        // ============================================
+        // VIP Modal Functions
         function openVIPModal() {
             document.getElementById('vipModal').classList.add('active');
             document.getElementById('vipUsername').value = '';
@@ -1174,10 +925,11 @@
         }
 
         function closeVIPModal() {
-            document.getElementById('vipModal').classList.remove('active');        }
+            document.getElementById('vipModal').classList.remove('active');
+        }
 
-        async function verifyVIP() {
-            const username = document.getElementById('vipUsername').value.trim();
+        // Verify VIP
+        async function verifyVIP() {            const username = document.getElementById('vipUsername').value.trim();
             const password = document.getElementById('vipPassword').value.trim();
             const btn = document.getElementById('vipBtn');
             
@@ -1190,55 +942,64 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحقق...';
             
             try {
-                // In production, verify against secure backend
-                // For demo, check against config
-                if (username === VIP_CREDENTIALS.username && password === VIP_CREDENTIALS.password) {
-                    // Upgrade to VIP
+                const response = await fetch(VIP_RAW_URL + '?t=' + Date.now());
+                const data = await response.text();
+                
+                let validUser, validPass;
+                
+                try {
+                    const json = JSON.parse(data);
+                    validUser = json.username || json.user;
+                    validPass = json.password || json.pass;
+                } catch {
+                    const parts = data.trim().split(':');
+                    if (parts.length === 2) {
+                        validUser = parts[0].trim();
+                        validPass = parts[1].trim();
+                    } else {
+                        const lines = data.trim().split('\n');
+                        validUser = lines[0]?.trim();
+                        validPass = lines[1]?.trim();
+                    }
+                }
+                
+                if (username === validUser && password === validPass) {
                     await upgradeToVIP();
                     closeVIPModal();
                     showToast('👑 تم تسجيل الدخول كمسؤول!', 'vip');
                 } else {
-                    // Log failed attempt for security monitoring
-                    await logSecurityEvent('failed_vip_login', { username, fingerprint: deviceFingerprint });
                     showToast('❌ بيانات خاطئة!', 'error');
                 }
             } catch (error) {
-                console.error('VIP verification error:', error);
+                console.error('VIP error:', error);
                 showToast('❌ خطأ في الاتصال', 'error');
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> دخول كمسؤول';
             }
         }
-
+        // Upgrade to VIP
         async function upgradeToVIP() {
             isVip = true;
             currentUser = { ...currentUser, role: 'admin' };
             
-            // Update UI
             document.getElementById('sidebarName').textContent = 'المسؤول ' + (currentUser?.name || 'VIP');
             document.getElementById('sidebarRole').textContent = '👑 مسؤول';
-            document.getElementById('sidebarRole').classList.add('vip');
             document.getElementById('sidebarHeader').classList.add('vip');
             document.getElementById('sidebarAvatar').textContent = '👑';
             document.getElementById('userStatus').textContent = 'مسؤول';
             document.getElementById('vipStatCard').style.display = 'flex';
-                        // Show admin navigation
+            
             document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden'));
             
-            // Load admin data
             await loadAdminData();
-            
             showToast('🎉 لديك الآن صلاحيات كاملة!', 'vip');
         }
 
-        // ============================================
-        // 🔄 REAL-TIME SUBSCRIPTIONS (Supabase)
-        // ============================================
+        // Setup Realtime Subscriptions
         function setupRealtimeSubscriptions() {
-            // Subscribe to player changes
-            playersChannel = supabase
-                .channel('players-changes')
+            // Players channel
+            supabase.channel('players-changes')
                 .on('postgres_changes', {
                     event: '*',
                     schema: 'public',
@@ -1248,9 +1009,8 @@
                 })
                 .subscribe();
             
-            // Subscribe to chat messages
-            chatChannel = supabase
-                .channel('chat-messages')
+            // Chat channel
+            supabase.channel('chat-messages')
                 .on('postgres_changes', {
                     event: 'INSERT',
                     schema: 'public',
@@ -1259,128 +1019,19 @@
                     appendChatMessage(payload.new);
                 })
                 .subscribe();
-            
-            // Subscribe to visitor activity
-            visitorsChannel = supabase
-                .channel('visitors-activity')
-                .on('postgres_changes', {
-                    event: 'UPDATE',
-                    schema: 'public',
-                    table: 'visitors'
-                }, (payload) => {
-                    updateOnlineStatus(payload.new);
-                })
-                .subscribe();
-            
-            // Subscribe to site settings            supabase
-                .channel('site-settings')
-                .on('postgres_changes', {
-                    event: 'UPDATE',
-                    schema: 'public',
-                    table: 'site_settings'
-                }, (payload) => {
-                    if (payload.new.site_enabled !== isSiteEnabled) {
-                        isSiteEnabled = payload.new.site_enabled;
-                        if (!isSiteEnabled && !isVip) {
-                            showToast('⚠️ الموقع تحت الصيانة حالياً', 'warning');
-                        }
-                    }
-                })
-                .subscribe();
         }
 
         function handlePlayerUpdate(payload) {
             if (payload.eventType === 'UPDATE' && payload.new.id === currentUser?.id) {
-                // Update current user data
                 currentUser = { ...currentUser, ...payload.new };
                 localStorage.setItem('gameUser', JSON.stringify(currentUser));
                 updateUIForUser();
             }
-            // Refresh leaderboard if visible
-            if (document.getElementById('page-leaderboard').classList.contains('active')) {
-                loadLeaderboard();
+            if (document.getElementById('page-leaderboard').classList.contains('active')) {                loadLeaderboard();
             }
         }
 
-        // ============================================
-        // 💬 CHAT SYSTEM
-        // ============================================
-        async function sendChat() {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            
-            if (!message || !currentUser || currentUser.is_muted) return;
-            
-            try {
-                const { error } = await supabase.from('messages').insert([{
-                    player_id: currentUser.id,
-                    player_name: currentUser.name,
-                    content: message,
-                    sent_at: new Date().toISOString(),
-                    is_admin: isVip
-                }]);
-                
-                if (error) throw error;
-                                input.value = '';
-                showToast('✓ تم إرسال الرسالة', 'success');
-            } catch (error) {
-                console.error('Chat error:', error);
-                showToast('❌ فشل إرسال الرسالة', 'error');
-            }
-        }
-
-        async function loadChatMessages() {
-            const container = document.getElementById('chatMessages');
-            container.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>جاري التحميل...</p></div>';
-            
-            try {
-                const { data, error } = await supabase
-                    .from('messages')
-                    .select('*, players(is_banned, is_muted)')
-                    .order('sent_at', { ascending: true })
-                    .limit(50);
-                
-                if (error) throw error;
-                
-                container.innerHTML = '';
-                if (!data || data.length === 0) {
-                    container.innerHTML = '<div class="empty-state"><i class="fas fa-comments"></i><p>لا توجد رسائل بعد - كن أول من يبدأ المحادثة!</p></div>';
-                    return;
-                }
-                
-                data.forEach(msg => appendChatMessage(msg, false));
-                container.scrollTop = container.scrollHeight;
-                
-            } catch (error) {
-                console.error('Load chat error:', error);
-                container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>تعذر تحميل المحادثات</p></div>';
-            }
-        }
-
-        function appendChatMessage(msg, animate = true) {
-            const container = document.getElementById('chatMessages');
-            const isOwn = msg.player_id === currentUser?.id;
-            const isBanned = msg.players?.is_banned;
-            const isAdmin = msg.is_admin;
-            
-            const messageEl = document.createElement('div');
-            messageEl.className = `chat-message ${isOwn ? 'own' : ''} ${animate ? '' : 'no-anim'}`;
-            messageEl.innerHTML = `
-                <div class="header">
-                    <span class="sender ${isAdmin ? 'admin' : ''} ${isBanned ? 'text-danger' : ''}">
-                        ${isAdmin ? '👑 ' : ''}${escapeHtml(msg.player_name)}
-                    </span>
-                    <span class="time">${formatTime(msg.sent_at)}</span>                </div>
-                <div class="text">${escapeHtml(msg.content)}</div>
-            `;
-            
-            container.appendChild(messageEl);
-            container.scrollTop = container.scrollHeight;
-        }
-
-        // ============================================
-        // 📊 DATA LOADING FUNCTIONS
-        // ============================================
+        // Load Overview Data
         async function loadOverviewData() {
             await Promise.all([
                 loadTopPlayers(),
@@ -1389,6 +1040,7 @@
             ]);
         }
 
+        // Load Top Players
         async function loadTopPlayers() {
             const container = document.getElementById('topPlayers');
             
@@ -1403,36 +1055,28 @@
                 if (error) throw error;
                 
                 if (!data || data.length === 0) {
-                    container.innerHTML = '<div class="empty-state"><i class="fas fa-trophy"></i><p>كن أول بطل في اللعبة! 🏆</p></div>';
+                    container.innerHTML = '<div class="empty-state"><i class="fas fa-trophy"></i><p>كن أول بطل! 🏆</p></div>';
                     return;
                 }
                 
                 container.innerHTML = data.map((player, index) => `
                     <div class="leader-item ${index === 0 ? 'top-1' : ''}">
-                        <div class="rank ${index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : 'normal'}">
-                            ${index + 1}
-                        </div>
+                        <div class="rank ${index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : 'normal'}">${index + 1}</div>
                         <div class="player-info">
-                            <div class="name">
-                                ${escapeHtml(player.name)}
-                                ${player.is_online ? '<span class="status-dot"></span>' : '<span class="status-dot offline"></span>'}
-                            </div>
-                            <div class="meta">
-                                <span>🎮 ${player.games_played} مباراة</span>
-                                <span>✅ ${player.wins} فوز</span>                            </div>
+                            <div class="name">${escapeHtml(player.name)} ${player.is_online ? '<span class="status-dot"></span>' : '<span class="status-dot offline"></span>'}</div>
+                            <div class="meta">🎮 ${player.games_played || 0} مباراة</div>
                         </div>
-                        <div class="player-score">${player.score}</div>
+                        <div class="player-score">${player.score || 0}</div>
                     </div>
                 `).join('');
-                
             } catch (error) {
-                console.error('Load leaderboard error:', error);
-                container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>تعذر تحميل المتصدرين</p></div>';
+                console.error('Load players error:', error);
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>تعذر التحميل</p></div>';
             }
         }
 
-        async function loadLeaderboard() {
-            const container = document.getElementById('fullLeaderboard');
+        // Load Full Leaderboard
+        async function loadLeaderboard() {            const container = document.getElementById('fullLeaderboard');
             
             try {
                 const { data, error } = await supabase
@@ -1445,259 +1089,315 @@
                 if (error) throw error;
                 
                 if (!data || data.length === 0) {
-                    container.innerHTML = '<div class="empty-state"><i class="fas fa-trophy"></i><p>لا يوجد لاعبين بعد</p></div>';
+                    container.innerHTML = '<div class="empty-state"><i class="fas fa-trophy"></i><p>لا يوجد لاعبين</p></div>';
                     return;
                 }
                 
                 container.innerHTML = data.map((player, index) => `
-                    <div class="leader-item ${index < 3 ? `top-${index + 1}` : ''} ${player.is_banned ? 'banned' : ''} ${player.is_muted ? 'muted' : ''}">
-                        <div class="rank ${index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : 'normal'}">
-                            ${index + 1}
-                        </div>
+                    <div class="leader-item ${index < 3 ? 'top-' + (index + 1) : ''}">
+                        <div class="rank ${index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : 'normal'}">${index + 1}</div>
                         <div class="player-info">
-                            <div class="name">
-                                ${escapeHtml(player.name)}
-                                ${player.is_online ? '<span class="status-dot"></span>' : '<span class="status-dot offline"></span>'}
-                                ${player.is_banned ? '<span class="badge banned">محظور</span>' : ''}
-                                ${player.is_muted ? '<span class="badge muted">مكتوم</span>' : ''}
-                            </div>
-                            <div class="meta">
-                                <span>🎮 ${player.games_played}</span>
-                                <span>✅ ${player.wins}</span>
-                                <span>❌ ${player.losses}</span>
-                            </div>
+                            <div class="name">${escapeHtml(player.name)} ${player.is_online ? '<span class="status-dot"></span>' : '<span class="status-dot offline"></span>'}</div>
+                            <div class="meta">🎮 ${player.games_played || 0} | ✅ ${player.wins || 0} | ❌ ${player.losses || 0}</div>
                         </div>
-                        <div class="player-score">${player.score}</div>
-                        ${isVip ? `                        <div class="player-actions">
-                            <button class="action-btn ${player.is_banned ? '' : 'danger'}" onclick="toggleBan('${player.id}', ${!player.is_banned})" title="${player.is_banned ? 'فك الحظر' : 'حظر'}">
+                        <div class="player-score">${player.score || 0}</div>
+                        ${isVip ? `
+                        <div style="display: flex; gap: 6px;">
+                            <button class="control-btn danger" style="padding: 5px 10px; font-size: 0.8em;" onclick="toggleBan('${player.id}', ${!player.is_banned})">
                                 <i class="fas ${player.is_banned ? 'fa-unlock' : 'fa-ban'}"></i>
                             </button>
-                            <button class="action-btn ${player.is_muted ? 'warning' : ''}" onclick="toggleMute('${player.id}', ${!player.is_muted})" title="${player.is_muted ? 'فك الكتم' : 'كتم'}">
+                            <button class="control-btn" style="padding: 5px 10px; font-size: 0.8em;" onclick="toggleMute('${player.id}', ${!player.is_muted})">
                                 <i class="fas ${player.is_muted ? 'fa-microphone' : 'fa-microphone-slash'}"></i>
                             </button>
                         </div>` : ''}
                     </div>
                 `).join('');
-                
             } catch (error) {
-                console.error('Load full leaderboard error:', error);
+                console.error('Load leaderboard error:', error);
             }
         }
 
+        // Update Online Count
         async function updateOnlineCount() {
             try {
-                const { count, error } = await supabase
+                const { count } = await supabase
                     .from('players')
-                    .select('id', { count: 'exact', head: true })
+                    .select('*', { count: 'exact', head: true })
                     .eq('is_online', true);
                 
-                if (!error && count !== null) {
-                    document.getElementById('onlineCount').textContent = count;
-                    if (isVip) {
-                        document.getElementById('adminOnlineCount').textContent = count;
-                    }
-                }
-            } catch (e) {
-                console.warn('Could not update online count:', e);
+                document.getElementById('onlineCount').textContent = count || 0;            } catch (e) {
+                console.warn('Online count error:', e);
             }
         }
 
-        // ============================================
-        // ⚙️ ADMIN FUNCTIONS
-        // ============================================
+        // Chat Functions
+        async function sendChat() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message || !currentUser || currentUser.is_muted) return;
+            
+            try {
+                await supabase.from('messages').insert([{
+                    player_id: currentUser.id,
+                    player_name: currentUser.name,
+                    content: message,
+                    sent_at: new Date().toISOString(),
+                    is_admin: isVip
+                }]);
+                
+                input.value = '';
+            } catch (error) {
+                showToast('❌ فشل الإرسال', 'error');
+            }
+        }
+
+        async function loadChatMessages() {
+            const container = document.getElementById('chatMessages');
+            
+            try {
+                const { data, error } = await supabase
+                    .from('messages')
+                    .select('*')
+                    .order('sent_at', { ascending: true })
+                    .limit(50);
+                
+                if (error) throw error;
+                
+                container.innerHTML = '';
+                if (!data || data.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><i class="fas fa-comments"></i><p>لا توجد رسائل</p></div>';
+                    return;
+                }
+                
+                data.forEach(msg => appendChatMessage(msg, false));
+                container.scrollTop = container.scrollHeight;
+            } catch (error) {
+                console.error('Load chat error:', error);
+            }        }
+
+        function appendChatMessage(msg, animate = true) {
+            const container = document.getElementById('chatMessages');
+            const isOwn = msg.player_id === currentUser?.id;
+            const isAdmin = msg.is_admin;
+            
+            const messageEl = document.createElement('div');
+            messageEl.className = 'chat-message';
+            messageEl.innerHTML = `
+                <div class="header">
+                    <span class="sender ${isAdmin ? 'admin' : ''}">${isAdmin ? '👑 ' : ''}${escapeHtml(msg.player_name)}</span>
+                    <span class="time">${formatTime(msg.sent_at)}</span>
+                </div>
+                <div class="text">${escapeHtml(msg.content)}</div>
+            `;
+            
+            container.appendChild(messageEl);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Admin Functions
         async function loadAdminData() {
             await Promise.all([
-                loadRegistrationsTable(),
+                loadAdminPlayers(),
                 loadVisitorsTable(),
-                loadModerationTable(),
-                loadAllStats(),
-                loadSecurityLog(),
-                loadSiteSettings()
+                loadModerationTable()
             ]);
         }
 
-        async function loadRegistrationsTable() {
-            const tbody = document.getElementById('registrationsTable');            
+        async function loadAdminPlayers() {
+            const container = document.getElementById('adminPlayersList');
+            
             try {
                 const { data, error } = await supabase
                     .from('players')
                     .select('*')
-                    .order('created_at', { ascending: false })
-                    .limit(100);
+                    .order('last_seen', { ascending: false });
                 
                 if (error) throw error;
                 
-                tbody.innerHTML = data.map(player => `
+                container.innerHTML = data.map(player => `
+                    <div class="leader-item">
+                        <div class="player-info">
+                            <div class="name">${escapeHtml(player.name)} ${player.is_online ? '<span class="status-dot"></span>' : '<span class="status-dot offline"></span>'}</div>
+                            <div class="meta">${player.device_fingerprint?.substring(0, 16)}...</div>
+                        </div>
+                        <div class="player-score">${player.score || 0}</div>
+                    </div>
+                `).join('');            } catch (error) {
+                console.error('Load admin players error:', error);
+            }
+        }
+
+        async function loadVisitorsTable() {
+            const tbody = document.getElementById('visitorsTable');
+            
+            try {
+                const { data, error } = await supabase
+                    .from('visitors')
+                    .select('*, players(name)')
+                    .order('last_activity', { ascending: false })
+                    .limit(20);
+                
+                if (error) throw error;
+                
+                tbody.innerHTML = data.map(v => `
                     <tr>
-                        <td><strong>${escapeHtml(player.name)}</strong></td>
-                        <td><code style="font-size:0.8em">${player.device_fingerprint?.substring(0, 12)}...</code></td>
-                        <td>${formatDate(player.created_at)}</td>
-                        <td>${formatTime(player.last_seen)}</td>
+                        <td>${v.players?.name || 'غير معروف'}</td>
+                        <td>${formatTime(v.entered_at)}</td>
+                        <td>${formatTime(v.last_activity)}</td>
+                        <td><span class="badge ${new Date() - new Date(v.last_activity) < 60000 ? 'online' : 'offline'}">${new Date() - new Date(v.last_activity) < 60000 ? 'نشط' : 'خامل'}</span></td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center">فشل التحميل</td></tr>';
+            }
+        }
+
+        async function loadModerationTable() {
+            const tbody = document.getElementById('moderationTable');
+            
+            try {
+                const { data, error } = await supabase
+                    .from('players')
+                    .select('*')
+                    .order('last_seen', { ascending: false });
+                
+                if (error) throw error;
+                
+                tbody.innerHTML = data.map(p => `
+                    <tr>
+                        <td><strong>${escapeHtml(p.name)}</strong></td>
+                        <td>${p.score || 0}</td>
                         <td>
-                            <span class="badge ${player.is_online ? 'online' : 'offline'} ${player.is_banned ? 'banned' : ''}">
-                                ${player.is_banned ? 'محظور' : player.is_online ? 'متصل' : 'غير متصل'}
-                            </span>
-                        </td>
-                        <td>
-                            <button class="action-btn" onclick="editPlayerName('${player.id}', '${escapeHtml(player.name)}')" title="تعديل الاسم"><i class="fas fa-edit"></i></button>
-                            <button class="action-btn ${player.is_banned ? '' : 'danger'}" onclick="toggleBan('${player.id}', ${!player.is_banned})" title="${player.is_banned ? 'فك الحظر' : 'حظر'}"><i class="fas ${player.is_banned ? 'fa-unlock' : 'fa-ban'}"></i></button>
+                            ${p.is_banned ? '<span class="badge banned">محظور</span>' : 
+                              p.is_muted ? '<span class="badge muted">مكتوم</span>' : 
+                              '<span class="badge online">عادي</span>'}
+                        </td>                        <td>
+                            <button class="control-btn ${p.is_banned ? '' : 'danger'}" style="padding: 5px 10px;" onclick="toggleBan('${p.id}', ${!p.is_banned})">
+                                <i class="fas ${p.is_banned ? 'fa-unlock' : 'fa-ban'}"></i>
+                            </button>
+                            <button class="control-btn ${p.is_muted ? '' : ''}" style="padding: 5px 10px;" onclick="toggleMute('${p.id}', ${!p.is_muted})">
+                                <i class="fas ${p.is_muted ? 'fa-microphone' : 'fa-microphone-slash'}"></i>
+                            </button>
                         </td>
                     </tr>
                 `).join('');
-                
             } catch (error) {
-                console.error('Load registrations error:', error);
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">فشل تحميل البيانات</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center">فشل التحميل</td></tr>';
             }
         }
 
         async function toggleBan(playerId, ban) {
             try {
-                const { error } = await supabase
-                    .from('players')
-                    .update({ 
-                        is_banned: ban,
-                        banned_at: ban ? new Date().toISOString() : null,
-                        banned_by: isVip ? currentUser?.id : null
-                    })
-                    .eq('id', playerId);
-                
-                if (error) throw error;
+                await supabase.from('players').update({
+                    is_banned: ban,
+                    banned_at: ban ? new Date().toISOString() : null
+                }).eq('id', playerId);
                 
                 showToast(`✓ تم ${ban ? 'حظر' : 'فك حظر'} اللاعب`, ban ? 'warning' : 'success');
-                await Promise.all([loadRegistrationsTable(), loadModerationTable(), loadLeaderboard()]);
-                            } catch (error) {
-                console.error('Toggle ban error:', error);
-                showToast('❌ فشل في تنفيذ الإجراء', 'error');
+                loadModerationTable();
+                loadLeaderboard();
+            } catch (error) {
+                showToast('❌ فشل التنفيذ', 'error');
             }
         }
 
         async function toggleMute(playerId, mute) {
             try {
-                const { error } = await supabase
-                    .from('players')
-                    .update({ 
-                        is_muted: mute,
-                        muted_at: mute ? new Date().toISOString() : null
-                    })
-                    .eq('id', playerId);
-                
-                if (error) throw error;
+                await supabase.from('players').update({
+                    is_muted: mute,
+                    muted_at: mute ? new Date().toISOString() : null
+                }).eq('id', playerId);
                 
                 showToast(`✓ تم ${mute ? 'كتم' : 'فك كتم'} اللاعب`, mute ? 'warning' : 'success');
-                await loadModerationTable();
-                
+                loadModerationTable();
             } catch (error) {
-                console.error('Toggle mute error:', error);
-                showToast('❌ فشل في تنفيذ الإجراء', 'error');
-            }
-        }
-
-        async function loadSiteSettings() {
-            try {
-                const { data, error } = await supabase
-                    .from('site_settings')
-                    .select('*')
-                    .limit(1)
-                    .single();
-                
-                if (error) throw error;
-                
-                isSiteEnabled = data.site_enabled;
-                document.getElementById('siteStatusText').textContent = `الموقع: ${isSiteEnabled ? 'مفعل ✅' : 'معطل ❌'}`;
-                document.getElementById('siteToggleBtn').className = `control-btn ${isSiteEnabled ? 'primary' : 'danger'}`;
-                document.getElementById('maintenanceMsg').value = data.maintenance_message || '';
-                document.getElementById('maxPlayers').value = data.max_players || 100;
-                
-            } catch (error) {
-                console.warn('Could not load site settings:', error);
+                showToast('❌ فشل التنفيذ', 'error');
             }
         }
 
         async function toggleSite() {
-            try {                const newStatus = !isSiteEnabled;
-                const { error } = await supabase
-                    .from('site_settings')
-                    .update({ 
-                        site_enabled: newStatus,
-                        updated_at: new Date().toISOString(),
-                        updated_by: currentUser?.id
-                    })
-                    .eq('id', 1); // Assuming single settings row
-                
-                if (error) throw error;
-                
-                isSiteEnabled = newStatus;
-                document.getElementById('siteStatusText').textContent = `الموقع: ${isSiteEnabled ? 'مفعل ✅' : 'معطل ❌'}`;
-                document.getElementById('siteToggleBtn').className = `control-btn ${isSiteEnabled ? 'primary' : 'danger'}`;
-                
-                showToast(`✓ تم ${isSiteEnabled ? 'تفعيل' : 'تعطيل'} الموقع`, isSiteEnabled ? 'success' : 'warning');
-                
-            } catch (error) {
-                console.error('Toggle site error:', error);
-                showToast('❌ فشل في تغيير حالة الموقع', 'error');
-            }
+            showToast('⚠️ هذه الميزة تحتاج إعداد إضافي', 'warning');
         }
 
-        async function logSecurityEvent(eventType, details) {
-            try {
-                await supabase.from('security_log').insert([{
-                    event_type: eventType,
-                    fingerprint: deviceFingerprint,
-                    player_id: currentUser?.id,
-                    details: JSON.stringify(details),
-                    created_at: new Date().toISOString()
-                }]);
-            } catch (e) {
-                console.warn('Could not log security event:', e);
-            }
+        // Navigation
+        function showPage(pageName) {            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            
+            document.getElementById('page-' + pageName).classList.add('active');
+            event.target.closest('.nav-link').classList.add('active');
+            
+            if (pageName === 'leaderboard') loadLeaderboard();
+            if (pageName === 'chat') loadChatMessages();
+            if (pageName === 'stats') loadUserStats();
+            if (pageName === 'players' && isVip) loadAdminPlayers();
+            if (pageName === 'visitors' && isVip) loadVisitorsTable();
+            if (pageName === 'moderation' && isVip) loadModerationTable();
         }
 
-        // ============================================
-        // 🔄 UI UPDATE FUNCTIONS
-        // ============================================
-        function updateUIForUser() {
+        // Load User Stats
+        async function loadUserStats() {
             if (!currentUser) return;
             
-            // Update sidebar
-            document.getElementById('sidebarName').textContent = currentUser.name;
+            const container = document.getElementById('userStatsContent');
+            container.innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon green"><i class="fas fa-trophy"></i></div>
+                        <div class="stat-info">
+                            <h4>الفوز</h4>
+                            <div class="value">${currentUser.wins || 0}</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(239,68,68,0.2); color: #f87171;"><i class="fas fa-times-circle"></i></div>
+                        <div class="stat-info">
+                            <h4>الخسارة</h4>
+                            <div class="value">${currentUser.losses || 0}</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon blue"><i class="fas fa-gamepad"></i></div>
+                        <div class="stat-info">
+                            <h4>المباريات</h4>
+                            <div class="value">${currentUser.games_played || 0}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Update UI for User
+        function updateUIForUser() {
+            if (!currentUser) return;
+                        document.getElementById('sidebarName').textContent = currentUser.name;
             document.getElementById('sidebarRole').textContent = currentUser.role === 'admin' ? '👑 مسؤول' : '🎮 لاعب';
             document.getElementById('sidebarAvatar').textContent = currentUser.role === 'admin' ? '👑' : '👤';
+            
             if (currentUser.role === 'admin') {
-                document.getElementById('sidebarHeader').classList.add('vip');                document.getElementById('sidebarRole').classList.add('vip');
+                document.getElementById('sidebarHeader').classList.add('vip');
             }
             
-            // Update stats
             document.getElementById('userStatus').textContent = 
                 currentUser.is_banned ? 'محظور ❌' : 
-                currentUser.is_muted ? 'مكتوم 🔇' : 
-                'نشط ✅';
-            document.getElementById('userScore').textContent = currentUser.score;
-            document.getElementById('userRank').textContent = '#?'; // Will be calculated
-            document.getElementById('userFingerprint').textContent = 
-                deviceFingerprint ? deviceFingerprint.substring(0, 16) + '...' : 'جاري التحديد...';
+                currentUser.is_muted ? 'مكتوم 🔇' : 'نشط ✅';
             
-            // Update chat input
+            document.getElementById('userScore').textContent = currentUser.score || 0;
+            
             const chatInput = document.getElementById('chatInput');
             const chatBtn = document.getElementById('chatSendBtn');
             const chatDisabledMsg = document.getElementById('chatDisabledMsg');
             
-            if (currentUser.is_banned) {
+            if (currentUser.is_banned || currentUser.is_muted) {
                 chatInput.disabled = true;
                 chatBtn.disabled = true;
-                chatDisabledMsg.classList.remove('hidden');
-                chatDisabledMsg.innerHTML = '<i class="fas fa-ban"></i> تم حظرك من قبل المسؤول - لا يمكنك المشاركة';
-            } else if (currentUser.is_muted) {
-                chatInput.disabled = true;
-                chatBtn.disabled = true;
-                chatDisabledMsg.classList.remove('hidden');
+                if (currentUser.is_muted) chatDisabledMsg.classList.remove('hidden');
             } else {
                 chatInput.disabled = false;
                 chatBtn.disabled = false;
                 chatDisabledMsg.classList.add('hidden');
             }
             
-            // Show/hide admin sections
             if (currentUser.role === 'admin') {
                 isVip = true;
                 document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden'));
@@ -1705,33 +1405,36 @@
             }
         }
 
-        function showPage(pageName) {
-            // Hide all sections
-            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        // Heartbeat
+        function startHeartbeat() {
+            heartbeatInterval = setInterval(async () => {
+                if (currentUser?.id) {
+                    try {
+                        await supabase.from('players').update({
+                            last_seen: new Date().toISOString(),
+                            is_online: true
+                        }).eq('id', currentUser.id);
+                        
+                        await supabase.from('visitors').update({
+                            last_activity: new Date().toISOString()
+                        }).eq('player_id', currentUser.id);
+                    } catch (e) {
+                        console.warn('Heartbeat failed:', e);                    }
+                }
+            }, 30000);
             
-            // Show selected
-            const page = document.getElementById('page-' + pageName);
-            if (page) {
-                page.classList.add('active');                
-                // Load page-specific data
-                if (pageName === 'leaderboard') loadLeaderboard();
-                if (pageName === 'chat') loadChatMessages();
-                if (pageName === 'stats') loadUserStats();
-                if (pageName === 'registrations' && isVip) loadRegistrationsTable();
-                if (pageName === 'players' && isVip) loadAdminPlayers();
-                if (pageName === 'visitors' && isVip) loadVisitorsTable();
-                if (pageName === 'moderation' && isVip) loadModerationTable();
-                if (pageName === 'allStats' && isVip) loadAllStats();
-            }
-            
-            // Highlight active nav
-            event?.target?.closest('.nav-link')?.classList.add('active');
+            document.addEventListener('visibilitychange', async () => {
+                if (document.hidden && currentUser?.id) {
+                    try {
+                        await supabase.from('players').update({ is_online: false }).eq('id', currentUser.id);
+                    } catch (e) {
+                        console.warn('Offline update failed:', e);
+                    }
+                }
+            });
         }
 
-        // ============================================
-        // 🛠️ UTILITY FUNCTIONS
-        // ============================================
+        // Utilities
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
@@ -1742,12 +1445,6 @@
             if (!isoString) return '-';
             const date = new Date(isoString);
             return date.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-        }
-
-        function formatDate(isoString) {
-            if (!isoString) return '-';
-            const date = new Date(isoString);
-            return date.toLocaleDateString('ar-EG', { month: 'short', day: 'numeric' });
         }
 
         function showToast(message, type = 'info') {
@@ -1762,7 +1459,8 @@
                 info: 'fa-info-circle',
                 vip: 'fa-crown'
             };
-                        toast.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i><span>${message}</span>`;
+            
+            toast.innerHTML = `<i class="fas ${icons[type]}"></i><span>${message}</span>`;
             container.appendChild(toast);
             
             setTimeout(() => {
@@ -1770,367 +1468,21 @@
                 setTimeout(() => toast.remove(), 300);
             }, 3500);
         }
-
-        function startHeartbeat() {
-            // Update online status every 30 seconds
-            heartbeatInterval = setInterval(async () => {
-                if (currentUser?.id) {
-                    try {
-                        await supabase
-                            .from('players')
-                            .update({ 
-                                last_seen: new Date().toISOString(),
-                                is_online: true
-                            })
-                            .eq('id', currentUser.id);
-                        
-                        await supabase
-                            .from('visitors')
-                            .update({ last_activity: new Date().toISOString() })
-                            .eq('player_id', currentUser.id)
-                            .eq('device_fingerprint', deviceFingerprint);
-                            
-                    } catch (e) {
-                        console.warn('Heartbeat failed:', e);
-                    }
-                }
-            }, 30000);
-            
-            // Mark as offline when page is hidden/closed
-            document.addEventListener('visibilitychange', async () => {
-                if (document.hidden && currentUser?.id) {
-                    try {
-                        await supabase
-                            .from('players')
-                            .update({ is_online: false })
-                            .eq('id', currentUser.id);
-                    } catch (e) {
-                        console.warn('Offline update failed:', e);
-                    }
-                }
-            });
-        }
-
-        // ============================================        // 🗄️ SUPABASE DATABASE SCHEMA (Run in SQL Editor)
-        // ============================================
-        /*
-        -- Players Table
-        CREATE TABLE players (
-            id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-            name TEXT NOT NULL UNIQUE,
-            device_fingerprint TEXT NOT NULL,
-            score INTEGER DEFAULT 0,
-            wins INTEGER DEFAULT 0,
-            losses INTEGER DEFAULT 0,
-            games_played INTEGER DEFAULT 0,
-            is_banned BOOLEAN DEFAULT false,
-            is_muted BOOLEAN DEFAULT false,
-            is_online BOOLEAN DEFAULT false,
-            last_seen TIMESTAMPTZ DEFAULT NOW(),
-            role TEXT DEFAULT 'player' CHECK (role IN ('player', 'admin')),
-            created_at TIMESTAMPTZ DEFAULT NOW(),
-            banned_at TIMESTAMPTZ,
-            banned_by UUID REFERENCES players(id),
-            muted_at TIMESTAMPTZ
-        );
-
-        -- Visitors Table
-        CREATE TABLE visitors (
-            id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-            player_id UUID REFERENCES players(id),
-            device_fingerprint TEXT NOT NULL,
-            entered_at TIMESTAMPTZ DEFAULT NOW(),
-            last_activity TIMESTAMPTZ DEFAULT NOW(),
-            user_agent TEXT,
-            screen_resolution TEXT,
-            ip_hash TEXT
-        );
-
-        -- Messages Table (Chat)
-        CREATE TABLE messages (
-            id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-            player_id UUID REFERENCES players(id),
-            player_name TEXT NOT NULL,
-            content TEXT NOT NULL,
-            sent_at TIMESTAMPTZ DEFAULT NOW(),
-            is_admin BOOLEAN DEFAULT false
-        );
-
-        -- Site Settings Table
-        CREATE TABLE site_settings (
-            id INTEGER PRIMARY KEY DEFAULT 1,
-            site_enabled BOOLEAN DEFAULT true,
-            maintenance_message TEXT DEFAULT 'الموقع تحت الصيانة',            max_players INTEGER DEFAULT 100,
-            updated_at TIMESTAMPTZ DEFAULT NOW(),
-            updated_by UUID REFERENCES players(id),
-            CONSTRAINT single_row CHECK (id = 1)
-        );
-        INSERT INTO site_settings (id) VALUES (1);
-
-        -- Security Log Table
-        CREATE TABLE security_log (
-            id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-            event_type TEXT NOT NULL,
-            fingerprint TEXT,
-            player_id UUID REFERENCES players(id),
-            details JSONB,
-            created_at TIMESTAMPTZ DEFAULT NOW()
-        );
-
-        -- Enable Realtime for all tables
-        BEGIN;
-        DROP PUBLICATION IF EXISTS supabase_realtime;
-        CREATE PUBLICATION supabase_realtime;
-        COMMIT;
-        ALTER PUBLICATION supabase_realtime ADD TABLE players, visitors, messages, site_settings, security_log;
-
-        -- Row Level Security (Basic Example)
-        ALTER TABLE players ENABLE ROW LEVEL SECURITY;
-        CREATE POLICY "Public read players" ON players FOR SELECT USING (true);
-        CREATE POLICY "Users update own" ON players FOR UPDATE USING (auth.uid()::text = id::text);
-        
-        -- Indexes for performance
-        CREATE INDEX idx_players_score ON players(score DESC);
-        CREATE INDEX idx_players_online ON players(is_online) WHERE is_online = true;
-        CREATE INDEX idx_players_fingerprint ON players(device_fingerprint);
-        CREATE INDEX idx_messages_sent ON messages(sent_at DESC);
-        CREATE INDEX idx_visitors_activity ON visitors(last_activity DESC);
-        */
-
-        // ============================================
-        // 🎯 PAGE NAVIGATION & EVENT LISTENERS
-        // ============================================
-        // Close modals on outside click
-        document.getElementById('vipModal')?.addEventListener('click', (e) => {
+        // Event Listeners
+        document.getElementById('vipModal').addEventListener('click', (e) => {
             if (e.target.id === 'vipModal') closeVIPModal();
         });
-        document.getElementById('regModal')?.addEventListener('click', (e) => {
-            if (e.target.id === 'regModal') {
-                // Don't allow closing registration modal without registering
-                showToast('⚠️ يرجى إدخال اسمك للبدء', 'warning');
-            }
-        });
-        // ESC key to close modals
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeVIPModal();
-            }
-        });
 
-        // Chat input enter key
-        document.getElementById('chatInput')?.addEventListener('keypress', (e) => {
+        document.getElementById('chatInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
                 sendChat();
             }
         });
 
-        // Filter functions for admin tables
-        function filterRegistrations() {
-            // Implement client-side filtering or re-fetch with filters
-            loadRegistrationsTable();
-        }
-        function filterModeration() {
-            loadModerationTable();
-        }
-
-        // Placeholder functions for remaining features
-        async function loadUserStats() {
-            if (!currentUser) return;
-            const container = document.getElementById('userStatsContent');
-            container.innerHTML = `
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon green"><i class="fas fa-trophy"></i></div>
-                        <div class="stat-info">
-                            <h4>الفوز</h4>
-                            <div class="value">${currentUser.wins || 0}</div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon red"><i class="fas fa-times-circle"></i></div>
-                        <div class="stat-info">
-                            <h4>الخسارة</h4>
-                            <div class="value">${currentUser.losses || 0}</div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon blue"><i class="fas fa-gamepad"></i></div>
-                        <div class="stat-info">
-                            <h4>المباريات</h4>
-                            <div class="value">${currentUser.games_played || 0}</div>                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon purple"><i class="fas fa-percentage"></i></div>
-                        <div class="stat-info">
-                            <h4>نسبة الفوز</h4>
-                            <div class="value">${currentUser.games_played ? Math.round((currentUser.wins / currentUser.games_played) * 100) : 0}%</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-2">
-                    <h3 class="section-title"><i class="fas fa-history"></i> آخر المباريات</h3>
-                    <div class="empty-state"><i class="fas fa-info-circle"></i><p>سيتم عرض سجل مبارياتك هنا قريباً</p></div>
-                </div>
-            `;
-        }
-
-        async function loadAdminPlayers() {
-            document.getElementById('adminPlayersList').innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><p>جاري تحميل اللاعبين...</p></div>';
-            // Implement similar to loadRegistrationsTable but with online filter
-            loadRegistrationsTable(); // Reuse for demo
-        }
-
-        async function loadVisitorsTable() {
-            const tbody = document.getElementById('visitorsTable');
-            try {
-                const { data, error } = await supabase
-                    .from('visitors')
-                    .select('*, players(name, is_banned)')
-                    .order('last_activity', { ascending: false })
-                    .limit(50);
-                
-                if (error) throw error;
-                
-                tbody.innerHTML = data.map(v => `
-                    <tr>
-                        <td>${v.players?.name ? escapeHtml(v.players.name) : 'غير معروف'} ${v.players?.is_banned ? '<span class="badge banned">محظور</span>' : ''}</td>
-                        <td><code style="font-size:0.75em">${v.device_fingerprint?.substring(0, 10)}...</code></td>
-                        <td>${formatTime(v.entered_at)}</td>
-                        <td>${formatTime(v.last_activity)}</td>
-                        <td style="font-size:0.85em">${v.user_agent?.includes('Mobile') ? '📱 جوال' : '💻 كمبيوتر'}</td>
-                        <td><span class="badge ${new Date() - new Date(v.last_activity) < 60000 ? 'online' : 'offline'}">
-                            ${new Date() - new Date(v.last_activity) < 60000 ? 'نشط' : 'خامل'}
-                        </span></td>
-                    </tr>
-                `).join('');
-            } catch (e) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">فشل التحميل</td></tr>';
-            }
-        }
-        async function loadModerationTable() {
-            const tbody = document.getElementById('moderationTable');
-            try {
-                const { data, error } = await supabase
-                    .from('players')
-                    .select('*')
-                    .order('last_seen', { ascending: false })
-                    .limit(50);
-                
-                if (error) throw error;
-                
-                tbody.innerHTML = data.map(p => `
-                    <tr>
-                        <td><strong>${escapeHtml(p.name)}</strong></td>
-                        <td>${p.score}</td>
-                        <td>
-                            ${p.is_banned ? '<span class="badge banned">محظور</span>' : 
-                              p.is_muted ? '<span class="badge muted">مكتوم</span>' : 
-                              '<span class="badge online">عادي</span>'}
-                        </td>
-                        <td>-</td>
-                        <td>${p.banned_at ? formatDate(p.banned_at) : '-'}</td>
-                        <td>
-                            <button class="action-btn ${p.is_banned ? '' : 'danger'}" onclick="toggleBan('${p.id}', ${!p.is_banned})"><i class="fas ${p.is_banned ? 'fa-unlock' : 'fa-ban'}"></i></button>
-                            <button class="action-btn ${p.is_muted ? 'warning' : ''}" onclick="toggleMute('${p.id}', ${!p.is_muted})"><i class="fas ${p.is_muted ? 'fa-microphone' : 'fa-microphone-slash'}"></i></button>
-                        </td>
-                    </tr>
-                `).join('');
-            } catch (e) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">فشل التحميل</td></tr>';
-            }
-        }
-
-        async function loadAllStats() {
-            try {
-                const { count: totalPlayers } = await supabase.from('players').select('*', { count: 'exact', head: true });
-                const { data: top } = await supabase.from('players').select('score').order('score', { ascending: false }).limit(1);
-                
-                document.getElementById('totalPlayers').textContent = totalPlayers || 0;
-                document.getElementById('topScore').textContent = top?.[0]?.score || 0;
-                document.getElementById('gamesToday').textContent = '0'; // Implement with date filter
-                
-                // Load stats list
-                const { data } = await supabase.from('players').select('name, score, wins, losses, games_played').order('score', { ascending: false }).limit(20);
-                document.getElementById('allStatsList').innerHTML = data?.map(p => `
-                    <div class="leader-item">
-                        <div class="player-info">
-                            <div class="name">${escapeHtml(p.name)}</div>
-                            <div class="meta">🎮 ${p.games_played} | ✅ ${p.wins} | ❌ ${p.losses}</div>                        </div>
-                        <div class="player-score">${p.score}</div>
-                    </div>
-                `).join('') || '<div class="empty-state">لا توجد بيانات</div>';
-                
-            } catch (e) {
-                console.error('Load all stats error:', e);
-            }
-        }
-
-        async function loadSecurityLog() {
-            const tbody = document.getElementById('securityLog');
-            try {
-                const { data, error } = await supabase
-                    .from('security_log')
-                    .select('*, players(name)')
-                    .order('created_at', { ascending: false })
-                    .limit(30);
-                
-                if (error) throw error;
-                
-                // Update counters
-                document.getElementById('suspiciousCount').textContent = data?.filter(d => d.event_type.includes('suspicious')).length || 0;
-                document.getElementById('duplicateFingerprints').textContent = data?.filter(d => d.event_type.includes('duplicate')).length || 0;
-                document.getElementById('blockedAttempts').textContent = data?.filter(d => d.event_type.includes('blocked')).length || 0;
-                
-                tbody.innerHTML = data?.map(log => `
-                    <tr>
-                        <td>${formatTime(log.created_at)}</td>
-                        <td><span class="badge ${log.event_type.includes('failed') ? 'banned' : 'online'}">${log.event_type}</span></td>
-                        <td><code style="font-size:0.75em">${log.fingerprint?.substring(0, 10)}...</code></td>
-                        <td>${log.players?.name || '-'}</td>
-                        <td style="font-size:0.85em">${log.details ? JSON.stringify(log.details).substring(0, 50) + '...' : '-'}</td>
-                        <td>-</td>
-                    </tr>
-                `).join('') || '<tr><td colspan="6" class="text-center">لا توجد حوادث</td></tr>';
-                
-            } catch (e) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">فشل التحميل</td></tr>';
-            }
-        }
-
-        async function saveSiteSettings() {
-            try {
-                const { error } = await supabase
-                    .from('site_settings')
-                    .update({
-                        maintenance_message: document.getElementById('maintenanceMsg').value,
-                        max_players: parseInt(document.getElementById('maxPlayers').value),
-                        updated_at: new Date().toISOString(),                        updated_by: currentUser?.id
-                    })
-                    .eq('id', 1);
-                
-                if (error) throw error;
-                showToast('✓ تم حفظ الإعدادات', 'success');
-            } catch (e) {
-                showToast('❌ فشل حفظ الإعدادات', 'error');
-            }
-        }
-
-        function clearCache() {
-            localStorage.clear();
-            showToast('✓ تم مسح الكاش - سيتم إعادة التحميل', 'success');
-            setTimeout(() => location.reload(), 1000);
-        }
-
-        function editPlayerName(playerId, currentName) {
-            const newName = prompt('تعديل اسم اللاعب:', currentName);
-            if (newName && newName !== currentName && newName.length >= 2) {
-                supabase.from('players').update({ name: newName }).eq('id', playerId).then(({ error }) => {
-                    if (error) showToast('❌ فشل التعديل', 'error');
-                    else { showToast('✓ تم تعديل الاسم', 'success'); loadRegistrationsTable(); }
-                });
-            }
-        }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeVIPModal();
+        });
     </script>
 </body>
 </html>
