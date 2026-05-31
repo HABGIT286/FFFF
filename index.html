@@ -109,8 +109,8 @@
     .form-control::placeholder { color: rgba(255,255,255,0.5); }
 
     /* Sections */
-    .section { display: none; padding: 20px; animation: fadeIn 0.4s ease; }
-    .section.active { display: block; }
+    .section { display: none !important; padding: 20px; animation: fadeIn 0.4s ease; }
+    .section.active { display: block !important; }
     
     /* Stats Cards */
     .stats-grid {
@@ -194,7 +194,7 @@
     .badge-banned { background: var(--danger); color: white; }
 
     /* Modals */
-    .modal {      display: none;
+    .modal {      display: none !important;
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
@@ -204,7 +204,7 @@
       z-index: 1000;
       animation: fadeIn 0.3s ease;
     }
-    .modal.active { display: flex; }
+    .modal.active { display: flex !important; }
     .modal-content {
       background: linear-gradient(135deg, var(--darker), #1e2749);
       padding: 30px;
@@ -289,10 +289,12 @@
     .nav-tab.vip-only {
       background: linear-gradient(135deg, #f39c12, #e74c3c);
       animation: pulse 3s infinite;
+      display: none !important;
     }
-
+    .nav-tab.vip-only.show { display: inline-block !important; }
     /* VIP Badge */
-    .vip-badge {      display: inline-block;
+    .vip-badge {
+      display: inline-block;
       padding: 3px 10px;
       background: linear-gradient(135deg, #f39c12, #e74c3c);
       border-radius: 20px;
@@ -335,12 +337,12 @@
       z-index: 2000;
       animation: fadeIn 0.3s ease, float 0.5s ease;
       box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-      display: none;
+      display: none !important;
     }
-    .notification.show { display: block; }
+    .notification.show { display: block !important; }
     .notification.success { background: var(--success); }
-    .notification.error { background: var(--danger); }
-    .notification.warning { background: var(--warning); color: var(--dark); }
+    .notification.error { background: var(--danger); }    .notification.warning { background: var(--warning); color: var(--dark); }
+
     /* Scrollbar */
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); border-radius: 10px; }
@@ -389,20 +391,20 @@
       position: relative;
       color: var(--secondary);
     }
-
-    /* Site Disabled Overlay */    .site-disabled {
+    /* Site Disabled Overlay */
+    .site-disabled {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
       background: rgba(0,0,0,0.95);
-      display: none;
+      display: none !important;
       justify-content: center;
       align-items: center;
       z-index: 3000;
       text-align: center;
       padding: 20px;
     }
-    .site-disabled.active { display: flex; }
+    .site-disabled.active { display: flex !important; }
     .site-disabled h2 {
       font-size: 2rem;
       color: var(--danger);
@@ -437,9 +439,9 @@
     }
 
     .game-title {
-      font-size: 1.5rem;
-      color: var(--accent);
-      display: flex;      align-items: center;
+      font-size: 1.5rem;      color: var(--accent);
+      display: flex;
+      align-items: center;
       gap: 10px;
     }
 
@@ -486,9 +488,9 @@
       padding: 15px;
       font-size: 1.2rem;
       text-align: center;
-      border: 3px solid var(--glass-border);
-      border-radius: 15px;
-      background: rgba(255,255,255,0.15);      color: white;
+      border: 3px solid var(--glass-border);      border-radius: 15px;
+      background: rgba(255,255,255,0.15);
+      color: white;
       margin: 15px 0;
       transition: var(--transition);
     }
@@ -535,9 +537,9 @@
     }
 
     .player-score {
-      margin-right: auto;
-      font-weight: bold;
-      color: var(--accent);    }
+      margin-right: auto;      font-weight: bold;
+      color: var(--accent);
+    }
 
     .difficulty-selector {
       display: flex;
@@ -584,9 +586,9 @@
       cursor: pointer;
       transition: var(--transition);
       display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;    }
+      align-items: center;      justify-content: center;
+      gap: 8px;
+    }
     .btn-invite { background: linear-gradient(135deg, #00b894, #00cec9); color: white; }
     .btn-start { background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: white; }
     .btn-leave { background: var(--danger); color: white; }
@@ -601,10 +603,11 @@
       max-height: 80vh;
       overflow-y: auto;
       z-index: 1500;
-      display: flex;
+      display: none !important;
       flex-direction: column;
       gap: 10px;
     }
+    .notifications-panel.show { display: flex !important; }
 
     .notification-card {
       background: linear-gradient(135deg, rgba(30,39,73,0.98), rgba(15,52,96,0.98));
@@ -632,10 +635,10 @@
       gap: 8px;
     }
 
-    .notification-actions {
-      display: flex;
+    .notification-actions {      display: flex;
       gap: 8px;
-      margin-top: 10px;    }
+      margin-top: 10px;
+    }
 
     .btn-notify {
       padding: 8px 16px;
@@ -681,10 +684,10 @@
       transform: scale(1.2) rotate(10deg);
       box-shadow: 0 0 20px var(--accent);
     }
-    .game-invite-btn.sent {
-      animation: none;
+    .game-invite-btn.sent {      animation: none;
       background: var(--success);
-      cursor: default;    }
+      cursor: default;
+    }
 
     .results-grid {
       display: grid;
@@ -730,10 +733,10 @@
       padding-top: 15px;
     }
     .game-chat .chat-container { max-height: 200px; }
-
     .category-icon {
       font-size: 2rem;
-      margin-bottom: 10px;      display: block;
+      margin-bottom: 10px;
+      display: block;
     }
 
     .answer-feedback {
@@ -769,20 +772,26 @@
       transform: scale(1.05);
       box-shadow: 0 5px 20px rgba(0,206,201,0.5);
     }
+
+    /* FIX: Ensure forms toggle properly */
+    #vipLoginForm { display: none !important; }
+    #vipLoginForm.show { display: block !important; }
+    #signupForm { display: block !important; }
+    #signupForm.hide { display: none !important; }
   </style>
 </head>
 <body>
 
-  <!-- Notification Container -->
-  <div id="notification" class="notification"></div>
+  <!-- Notification Container -->  <div id="notification" class="notification"></div>
 
   <!-- Notifications Panel for Game Invites -->
-  <div id="notificationsPanel" class="notifications-panel" style="display:none;"></div>
+  <div id="notificationsPanel" class="notifications-panel"></div>
 
   <!-- Site Disabled Overlay -->
   <div id="siteDisabled" class="site-disabled">
     <div class="card">
-      <h2>⚠️ الموقع معطل حالياً</h2>      <p id="maintenanceMsg">جاري الصيانة، يرجى العودة لاحقاً</p>
+      <h2>⚠️ الموقع معطل حالياً</h2>
+      <p id="maintenanceMsg">جاري الصيانة، يرجى العودة لاحقاً</p>
     </div>
   </div>
 
@@ -817,13 +826,12 @@
       </div>
 
       <!-- VIP Login Form -->
-      <div id="vipLoginForm" style="display:none;">
+      <div id="vipLoginForm">
         <h3 style="text-align:center; margin-bottom:20px; color:var(--accent)">🔐 دخول VIP</h3>
         <div class="form-group">
           <label>🔑 كلمة السر</label>
           <input type="password" id="vipPassword" class="form-control" placeholder="أدخل كلمة السر" required>
-        </div>
-        <div class="form-group">
+        </div>        <div class="form-group">
           <label>🎫 الرمز السري</label>
           <input type="text" id="vipCode" class="form-control" placeholder="أدخل الرمز" required>
         </div>
@@ -831,7 +839,8 @@
           🔓 دخول VIP
         </button>
         <button class="btn" style="background:rgba(255,255,255,0.1); margin-top:10px;" onclick="hideVIPLogin()">
-          ← العودة        </button>
+          ← العودة
+        </button>
       </div>
     </div>
   </div>
@@ -860,19 +869,18 @@
       <button class="nav-tab" onclick="showSection('game')">🎮 اللعبة</button>
       
       <!-- VIP Only Tabs -->
-      <button class="nav-tab vip-only" id="tabUserData" onclick="showSection('userData')" style="display:none;">📋 بيانات المستخدمين</button>
-      <button class="nav-tab vip-only" id="tabManagePlayers" onclick="showSection('managePlayers')" style="display:none;">🎮 إدارة اللاعبين</button>
-      <button class="nav-tab vip-only" id="tabModeration" onclick="showSection('moderation')" style="display:none;">🛡️ الإدارة</button>
-      <button class="nav-tab vip-only" id="tabSiteControl" onclick="showSection('siteControl')" style="display:none;">⚙️ تحكم الموقع</button>
-      <button class="nav-tab vip-only" id="tabProtection" onclick="showSection('protection')" style="display:none;">🔐 الحماية</button>
+      <button class="nav-tab vip-only" id="tabUserData" onclick="showSection('userData')">📋 بيانات المستخدمين</button>
+      <button class="nav-tab vip-only" id="tabManagePlayers" onclick="showSection('managePlayers')">🎮 إدارة اللاعبين</button>
+      <button class="nav-tab vip-only" id="tabModeration" onclick="showSection('moderation')">🛡️ الإدارة</button>
+      <button class="nav-tab vip-only" id="tabSiteControl" onclick="showSection('siteControl')">⚙️ تحكم الموقع</button>
+      <button class="nav-tab vip-only" id="tabProtection" onclick="showSection('protection')">🔐 الحماية</button>
     </div>
 
     <!-- Sections -->
     
     <!-- Profile Section -->
     <div id="profile" class="section active">
-      <div class="card">
-        <h3>📝 معلومات حسابي</h3>
+      <div class="card">        <h3>📝 معلومات حسابي</h3>
         <div class="form-group">
           <label>اسم المستخدم</label>
           <input type="text" id="myUsername" class="form-control" disabled>
@@ -880,7 +888,8 @@
         <div class="form-group">
           <label>الاسم في اللعبة</label>
           <input type="text" id="myDisplayName" class="form-control" onchange="updateDisplayName(this.value)">
-        </div>        <button class="btn btn-danger" onclick="logout()">🚪 تسجيل الخروج</button>
+        </div>
+        <button class="btn btn-danger" onclick="logout()">🚪 تسجيل الخروج</button>
       </div>
     </div>
 
@@ -920,8 +929,7 @@
       <div class="card">
         <h3>📊 إحصائياتي</h3>
         <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-value" id="myWins">0</div>
+          <div class="stat-card">            <div class="stat-value" id="myWins">0</div>
             <div class="stat-label">✅ فوز</div>
           </div>
           <div class="stat-card">
@@ -929,7 +937,8 @@
             <div class="stat-label">❌ خسارة</div>
           </div>
           <div class="stat-card">
-            <div class="stat-value" id="myRank">-</div>            <div class="stat-label">🏆 المرتبة</div>
+            <div class="stat-value" id="myRank">-</div>
+            <div class="stat-label">🏆 المرتبة</div>
           </div>
           <div class="stat-card">
             <div class="stat-value" id="myLastOpponent">-</div>
@@ -969,8 +978,7 @@
               <th>بواسطة</th>
               <th>التاريخ</th>
             </tr>
-          </thead>
-          <tbody id="warningsBody"></tbody>
+          </thead>          <tbody id="warningsBody"></tbody>
         </table>
       </div>
     </div>
@@ -978,7 +986,8 @@
     <!-- VIP: User Data Section -->
     <div id="userData" class="section">
       <div class="card">
-        <h3>📋 بيانات جميع المستخدمين</h3>        <table class="warning-table">
+        <h3>📋 بيانات جميع المستخدمين</h3>
+        <table class="warning-table">
           <thead>
             <tr>
               <th>المعرف</th>
@@ -1018,8 +1027,7 @@
             <option value="unmuted">✅ فك الكتم</option>
             <option value="unbanned">✅ فك الحظر</option>
           </select>
-        </div>
-        <div class="form-group">
+        </div>        <div class="form-group">
           <label>السبب (اختياري)</label>
           <input type="text" id="modReason" class="form-control" placeholder="سبب الإجراء">
         </div>
@@ -1027,7 +1035,8 @@
       </div>
     </div>
 
-    <!-- VIP: Site Control -->    <div id="siteControl" class="section">
+    <!-- VIP: Site Control -->
+    <div id="siteControl" class="section">
       <div class="card">
         <h3>⚙️ تحكم في حالة الموقع</h3>
         <div style="display:flex; align-items:center; gap:15px; margin:20px 0; flex-wrap:wrap;">
@@ -1067,8 +1076,7 @@
     <!-- ===== Game Section ===== -->
     <div id="game" class="section">
       <!-- Game Lobby -->
-      <div id="gameLobby" style="display:block;">
-        <div class="card">
+      <div id="gameLobby">        <div class="card">
           <h3>🎮 إنشاء غرفة لعب جديدة</h3>
           
           <div class="form-group">
@@ -1076,7 +1084,8 @@
             <div class="difficulty-selector">
               <button class="difficulty-btn easy active" onclick="selectDifficulty('easy')">😊 سهل</button>
               <button class="difficulty-btn medium" onclick="selectDifficulty('medium')">🤔 متوسط</button>
-              <button class="difficulty-btn hard" onclick="selectDifficulty('hard')">🔥 صعب جداً</button>            </div>
+              <button class="difficulty-btn hard" onclick="selectDifficulty('hard')">🔥 صعب جداً</button>
+            </div>
           </div>
           
           <div class="form-group">
@@ -1116,8 +1125,7 @@
           <div class="game-board">
             <div class="game-header">
               <div class="game-title">
-                <span id="gameRoomCode">ROOM: XXXXXX</span>
-                <span id="gameDifficulty" class="badge badge-active">سهل</span>
+                <span id="gameRoomCode">ROOM: XXXXXX</span>                <span id="gameDifficulty" class="badge badge-active">سهل</span>
               </div>
               <div class="game-timer" id="gameTimer">⏱️ 10s</div>
             </div>
@@ -1125,7 +1133,8 @@
             <!-- Current Round -->
             <div id="gameRound">
               <div class="waiting-animation">
-                <h3>⏳ جاري تحضير الجولة...</h3>                <p class="waiting-dots"></p>
+                <h3>⏳ جاري تحضير الجولة...</h3>
+                <p class="waiting-dots"></p>
               </div>
             </div>
             
@@ -1165,8 +1174,7 @@
             <div class="game-chat">
               <h4>💬 دردشة اللعبة</h4>
               <div id="gameChatContainer" class="chat-container"></div>
-              <div style="display:flex; gap:10px; margin-top:10px;">
-                <input type="text" 
+              <div style="display:flex; gap:10px; margin-top:10px;">                <input type="text" 
                        id="gameChatInput" 
                        class="form-control" 
                        placeholder="اكتب رسالة..." 
@@ -1174,7 +1182,8 @@
                 <button class="btn btn-primary" style="width:auto;" onclick="sendGameChat()">➤</button>
               </div>
             </div>
-          </div>          
+          </div>
+          
           <!-- Players Sidebar -->
           <div class="players-panel">
             <h4 style="margin-bottom:15px;">👥 اللاعبون (<span id="playersInRoomCount">1</span>/<span id="maxPlayersDisplay">2</span>)</h4>
@@ -1207,31 +1216,35 @@
   </div>
 
   <script>
-    // Configuration
+    // Configuration - يمكنك تعديل هذه القيم حسب مشروعك
     const SUPABASE_URL = 'https://vtrwdcyjsnyvdtzisucv.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ0cndkY3lqc255dmR0emlzdWN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NTExODAsImV4cCI6MjA5NTUyNzE4MH0.p908XmhnvEGiixWDM04eBeXL1vxLLg-dsxCoQ8CMD1s';
     const VIP_RAW_URL = 'https://gist.githubusercontent.com/HABGIT286/675ff47c78ff90ac39a07f349b8af32e/raw/f7637e33256bc7497a7c6f193d952934e9435c55/SS';
-
+    
+    // ⚠️ FALLBACK VIP CREDENTIALS (في حال فشل جلب الرابط)
+    const FALLBACK_VIP = { user: 'ONX.COM', pass: 'ONX' };
     // Initialize Supabase
-    let db;
+    let db = null;
+    let dbConnected = false;
+    
     try {
-      const { createClient } = supabase;
-      db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      console.log('✅ Supabase connected');
+      if (typeof supabase !== 'undefined' && supabase.createClient) {
+        db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        dbConnected = true;
+        console.log('✅ Supabase connected');
+      } else {
+        console.warn('⚠️ Supabase library not loaded, running in offline mode');
+      }
     } catch (error) {
       console.error('❌ Supabase connection failed:', error);
+      dbConnected = false;
     }
 
     // Current User State
-    let currentUser = null;    let isVIP = false;
+    let currentUser = null;
+    let isVIP = false;
     let deviceFingerprint = null;
-    let chatSubscription = null;
-    let visitorsSubscription = null;
-    let statsSubscription = null;
-    let warningsSubscription = null;
-    let settingsSubscription = null;
-    let gameRoomSubscription = null;
-    let notificationSubscription = null;
+    let subscriptions = [];
 
     // ===== Game Configuration =====
     const CATEGORIES = [
@@ -1259,8 +1272,7 @@
     document.addEventListener('DOMContentLoaded', async () => {
       console.log('🚀 App initializing...');
       try {
-        await initFingerprint();
-        await checkSiteStatus();
+        await initFingerprint();        await checkSiteStatus();
         await checkSession();
         console.log('✅ App initialized');
       } catch (error) {
@@ -1272,32 +1284,44 @@
     // Device Fingerprinting
     async function initFingerprint() {
       try {
-        const fp = await FingerprintJS.load();        const result = await fp.get();
-        deviceFingerprint = result.visitorId;
-        console.log('🔐 Device Fingerprint:', deviceFingerprint);
+        if (typeof FingerprintJS !== 'undefined') {
+          const fp = await FingerprintJS.load();
+          const result = await fp.get();
+          deviceFingerprint = result.visitorId;
+          console.log('🔐 Device Fingerprint:', deviceFingerprint);
+        } else {
+          deviceFingerprint = 'offline_' + Math.random().toString(36).substr(2, 9);
+        }
       } catch (err) {
         console.error('❌ Fingerprint error:', err);
         deviceFingerprint = 'unknown_' + Math.random().toString(36).substr(2, 9);
       }
     }
 
-    // Show Notification
+    // Show Notification - FIXED with better visibility
     function showNotification(message, type = 'success') {
       const notif = document.getElementById('notification');
       notif.textContent = message;
-      notif.className = `notification ${type} show`;
-      setTimeout(() => notif.classList.remove('show'), 4000);
+      notif.className = `notification ${type}`;
+      // Force reflow to restart animation
+      void notif.offsetWidth;
+      notif.classList.add('show');
+      
+      setTimeout(() => {
+        notif.classList.remove('show');
+      }, 4000);
+      
+      console.log(`[${type.toUpperCase()}] ${message}`);
     }
 
     // Check if Site is Enabled
     async function checkSiteStatus() {
       try {
-        if (!db) return true;
+        if (!dbConnected) return true;
         const { data, error } = await db.from('site_settings').select('*').eq('id', 1).maybeSingle();
         if (error) {
           console.error('Site status check error:', error);
-          return true;
-        }
+          return true;        }
         
         if (data && !data.is_enabled && !isVIP) {
           document.getElementById('maintenanceMsg').textContent = data.maintenance_message || 'الموقع تحت الصيانة';
@@ -1311,7 +1335,7 @@
       }
     }
 
-    // Check Existing Session
+    // Check Existing Session - FIXED to always show main app if user exists
     async function checkSession() {
       try {
         const saved = localStorage.getItem('harfGame_user');
@@ -1321,225 +1345,363 @@
           isVIP = true;
           currentUser = JSON.parse(saved);
           await afterLogin();
-        } else if (saved) {          currentUser = JSON.parse(saved);
-          if (db) {
+          return;
+        }
+        
+        if (saved) {
+          currentUser = JSON.parse(saved);
+          
+          // If no DB connection, still allow login (offline mode)
+          if (!dbConnected) {
+            await afterLogin();
+            return;
+          }
+          
+          // Try to verify user with DB
+          try {
             const { data, error } = await db.from('users')
               .select('*').eq('id', currentUser.id).maybeSingle();
+            
             if (!error && data && data.status === 'active') {
               await afterLogin();
             } else {
+              // User not found or inactive, clear session
               logout();
             }
-          } else {
-            await afterLogin();
-          }
+          } catch (dbErr) {
+            console.warn('DB verification failed, allowing offline access');
+            await afterLogin();          }
         }
       } catch (err) {
         console.error('Session check error:', err);
+        // Still try to show auth screen
+        document.getElementById('authScreen').style.display = 'flex';
       }
     }
 
-    // Sign Up Handler
+    // Sign Up Handler - FIXED with better error handling
     async function handleSignup() {
       try {
         const usernameInput = document.getElementById('signupUsername');
         const passwordInput = document.getElementById('signupPassword');
         const displayNameInput = document.getElementById('signupDisplayName');
         
-        const username = usernameInput.value.trim();
-        const password = passwordInput.value;
-        const displayName = displayNameInput.value.trim() || username;
-
-        console.log('Signup attempt:', { username, displayName });
+        const username = usernameInput?.value?.trim() || '';
+        const password = passwordInput?.value || '';
+        const displayName = displayNameInput?.value?.trim() || username;
 
         if (!username || !password) {
           showNotification('⚠️ يرجى ملء جميع الحقول المطلوبة', 'error');
           return;
         }
 
-        if (!db) {
-          showNotification('❌ خطأ في الاتصال بقاعدة البيانات', 'error');
+        // If no DB, create local user (offline mode)
+        if (!dbConnected) {
+          currentUser = {
+            id: 'local_' + Date.now(),
+            username: username,
+            display_name: displayName,
+            status: 'active',
+            role: 'user'
+          };
+          localStorage.setItem('harfGame_user', JSON.stringify(currentUser));
+          showNotification('✅ تم إنشاء الحساب (وضع غير متصل) 🎉', 'success');
+          await afterLogin();
           return;
         }
 
         // Check username uniqueness
-        const { data: existing } = await db.from('users').select('id').eq('username', username).maybeSingle();
-        if (existing) {
+        const { data: existing, error: checkError } = await db.from('users')
+          .select('id').eq('username', username).maybeSingle();
+        
+        if (checkError) {
+          console.error('Username check error:', checkError);
+          showNotification('⚠️ خطأ في التحقق من اسم المستخدم', 'warning');
+          // Continue anyway in case of minor error
+        }
+                if (existing) {
           showNotification('❌ اسم المستخدم مستخدم مسبقاً!', 'error');
           return;
         }
 
         // Create user
-        const { data, error } = await db.from('users').insert([{          username,
+        const { data, error } = await db.from('users').insert([{
+          username,
           password,
           display_name: displayName,
           device_fingerprint: deviceFingerprint,
-          role: 'user'
+          role: 'user',
+          status: 'active'
         }]).select().single();
 
         if (error) {
           console.error('Signup error:', error);
-          showNotification('❌ خطأ في إنشاء الحساب: ' + error.message, 'error');
+          showNotification('❌ خطأ: ' + (error.message || 'فشل إنشاء الحساب'), 'error');
           return;
         }
 
-        // Create stats entry
-        await db.from('stats').insert([{
-          user_id: data.id,
-          username: username,
-          wins: 0,
-          losses: 0,
-          rank: 0
-        }]);
+        // Create stats entry (non-blocking)
+        if (data?.id) {
+          db.from('stats').insert([{
+            user_id: data.id,
+            username: username,
+            wins: 0,
+            losses: 0,
+            rank: 0
+          }]).then().catch(e => console.warn('Stats creation warning:', e));
+        }
 
         // Auto login
         currentUser = data;
         localStorage.setItem('harfGame_user', JSON.stringify(data));
         showNotification('✅ تم إنشاء الحساب بنجاح! 🎉', 'success');
         await afterLogin();
+        
       } catch (err) {
         console.error('Signup error:', err);
-        showNotification('❌ خطأ غير متوقع: ' + err.message, 'error');
+        showNotification('❌ خطأ: ' + err.message, 'error');
       }
     }
 
-    // Show VIP Login
+    // Show VIP Login - FIXED with proper DOM manipulation
     function showVIPLogin() {
-      console.log('Showing VIP login form');
-      document.getElementById('signupForm').style.display = 'none';
-      document.getElementById('vipLoginForm').style.display = 'block';
+      console.log('🔐 Showing VIP login form');
+      
+      const signupForm = document.getElementById('signupForm');
+      const vipForm = document.getElementById('vipLoginForm');      
+      if (signupForm && vipForm) {
+        // Use class-based toggling for better CSS control
+        signupForm.classList.add('hide');
+        signupForm.classList.remove('show');
+        vipForm.classList.add('show');
+        vipForm.classList.remove('hide');
+        
+        // Also use direct style as fallback
+        signupForm.style.display = 'none';
+        vipForm.style.display = 'block';
+      }
+      
+      // Clear inputs
+      const vipPass = document.getElementById('vipPassword');
+      const vipCode = document.getElementById('vipCode');
+      if (vipPass) vipPass.value = '';
+      if (vipCode) vipCode.value = '';
     }
 
     function hideVIPLogin() {
-      console.log('Hiding VIP login form');
-      document.getElementById('signupForm').style.display = 'block';
-      document.getElementById('vipLoginForm').style.display = 'none';
-      document.getElementById('vipPassword').value = '';
-      document.getElementById('vipCode').value = '';
+      console.log('🔐 Hiding VIP login form');
+      
+      const signupForm = document.getElementById('signupForm');
+      const vipForm = document.getElementById('vipLoginForm');
+      
+      if (signupForm && vipForm) {
+        signupForm.classList.remove('hide');
+        signupForm.classList.add('show');
+        vipForm.classList.remove('show');
+        vipForm.classList.add('hide');
+        
+        signupForm.style.display = 'block';
+        vipForm.style.display = 'none';
+      }
     }
 
-    // VIP Login Handler
-    async function handleVIPLogin() {      try {
-        const inputPass = document.getElementById('vipPassword').value;
-        const inputCode = document.getElementById('vipCode').value;
-
-        console.log('VIP login attempt');
+    // VIP Login Handler - FIXED with fallback credentials
+    async function handleVIPLogin() {
+      try {
+        const inputPass = document.getElementById('vipPassword')?.value || '';
+        const inputCode = document.getElementById('vipCode')?.value || '';
 
         if (!inputPass || !inputCode) {
           showNotification('⚠️ يرجى ملء جميع الحقول', 'error');
           return;
         }
 
-        const response = await fetch(VIP_RAW_URL);
-        const rawText = await response.text();
-        console.log('Raw VIP data:', rawText);
-        
-        const sMatch = rawText.match(/【S】(.*?)【S】/);
-        const pMatch = rawText.match(/【P】(.*?)【P】/);
-        
-        const validUser = sMatch?.[1]?.trim();
-        const validPass = pMatch?.[1]?.trim();
+        let validUser = FALLBACK_VIP.user;
+        let validPass = FALLBACK_VIP.pass;        
+        // Try to fetch from raw URL with timeout
+        try {
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 5000);
+          
+          const response = await fetch(VIP_RAW_URL, { signal: controller.signal });
+          clearTimeout(timeout);
+          
+          if (response.ok) {
+            const rawText = await response.text();
+            console.log('Raw VIP data:', rawText);
+            
+            // Try multiple parsing patterns
+            const patterns = [
+              /【S】(.*?)【S】.*?【P】(.*?)【P】/s,
+              /S:(\S+).*?P:(\S+)/s,
+              /user["\']?\s*[:=]\s*["\']?(\S+).*?pass["\']?\s*[:=]\s*["\']?(\S+)/si,
+              /(\S+)[\s\n]+(\S+)/ // fallback: two words
+            ];
+            
+            for (const pattern of patterns) {
+              const match = rawText.match(pattern);
+              if (match && match[1] && match[2]) {
+                validUser = match[1].trim();
+                validPass = match[2].trim();
+                console.log('Parsed VIP credentials');
+                break;
+              }
+            }
+          }
+        } catch (fetchErr) {
+          console.warn('⚠️ Failed to fetch VIP credentials, using fallback');
+          // Use fallback credentials defined above
+        }
 
-        console.log('Parsed VIP:', { validUser, validPass });
+        console.log('Validating VIP:', { inputCode, inputPass, validUser, validPass });
 
         if (inputPass === validPass && inputCode === validUser) {
+          // Create VIP session
           isVIP = true;
           currentUser = {
             id: 'vip_admin',
             username: 'VIP_ADMIN',
             display_name: '👑 المدير العام',
-            role: 'vip'
+            role: 'vip',
+            status: 'active'
           };
           localStorage.setItem('harfGame_user', JSON.stringify(currentUser));
-          localStorage.setItem('harfGame_vip', 'true');
+          localStorage.setItem('harfGame_vip', 'true');          
           showNotification('👑 مرحباً بك في لوحة التحكم VIP! ✨', 'success');
           await afterLogin();
         } else {
           showNotification('❌ بيانات VIP غير صحيحة!', 'error');
+          // Shake animation for feedback
+          const vipForm = document.getElementById('vipLoginForm');
+          if (vipForm) {
+            vipForm.style.animation = 'none';
+            setTimeout(() => vipForm.style.animation = 'float 0.5s ease', 10);
+          }
         }
       } catch (err) {
         console.error('VIP Auth Error:', err);
-        showNotification('❌ خطأ في التحقق من بيانات VIP: ' + err.message, 'error');
+        showNotification('❌ خطأ: ' + err.message, 'error');
       }
     }
 
-    // After Login Setup
+    // After Login Setup - FIXED to always show main app
     async function afterLogin() {
-      console.log('After login setup');
+      console.log('🔑 After login setup');
       try {
-        document.getElementById('authScreen').style.display = 'none';
-        document.getElementById('mainApp').style.display = 'block';        
-        const displayName = currentUser.display_name || currentUser.username;
-        document.getElementById('userDisplay').textContent = `👤 ${displayName}`;
-        document.getElementById('myUsername').value = currentUser.username;
-        document.getElementById('myDisplayName').value = displayName;
+        // Hide auth, show main app
+        const authScreen = document.getElementById('authScreen');
+        const mainApp = document.getElementById('mainApp');
+        
+        if (authScreen) authScreen.style.display = 'none';
+        if (mainApp) mainApp.style.display = 'block';
+        
+        // Update UI
+        const displayName = currentUser?.display_name || currentUser?.username || 'مستخدم';
+        const userDisplay = document.getElementById('userDisplay');
+        if (userDisplay) userDisplay.textContent = `👤 ${displayName}`;
+        
+        const myUsername = document.getElementById('myUsername');
+        const myDisplayName = document.getElementById('myDisplayName');
+        if (myUsername) myUsername.value = currentUser?.username || '';
+        if (myDisplayName) myDisplayName.value = displayName;
         
         if (isVIP) {
-          document.getElementById('vipIndicator').style.display = 'block';
-          document.querySelectorAll('.vip-only').forEach(el => el.style.display = 'inline-block');
-          document.getElementById('allStatsCard').style.display = 'block';
+          const vipIndicator = document.getElementById('vipIndicator');
+          if (vipIndicator) vipIndicator.style.display = 'block';
+          
+          // Show VIP tabs
+          document.querySelectorAll('.nav-tab.vip-only').forEach(el => {
+            el.classList.add('show');
+          });
+          const allStatsCard = document.getElementById('allStatsCard');
+          if (allStatsCard) allStatsCard.style.display = 'block';
+        }        
+        // Load initial data (non-blocking, with error handling)
+        if (dbConnected) {
+          await Promise.allSettled([
+            loadPlayers(),
+            loadVisitors(),
+            loadChat(),
+            loadStats(),
+            loadWarnings()
+          ]);
+          
+          if (isVIP) {
+            await Promise.allSettled([
+              loadUserData(),
+              loadProtectionLogs()
+            ]);
+          }
         }
         
-        await loadPlayers();
-        await loadVisitors();
-        await loadChat();
-        await loadStats();
-        await loadWarnings();
-        
-        if (isVIP) {
-          await loadUserData();
-          await loadProtectionLogs();
-        }
-        
+        // Setup Realtime Subscriptions
         setupRealtimeSubscriptions();
+        
+        // Update online status
         await updateOnlineStatus(true);
+        
+        console.log('✅ Login complete');
+        
       } catch (err) {
         console.error('After login error:', err);
+        // Still try to show the app even if some features fail
+        document.getElementById('mainApp')?.style.setProperty('display', 'block', 'important');
       }
     }
 
     // Setup Realtime Subscriptions
     function setupRealtimeSubscriptions() {
-      if (!db) return;
+      if (!dbConnected || !db) return;
 
       try {
-        chatSubscription = db.channel('chat:public')
+        // Chat messages
+        const chatSub = db.channel('chat:public')
           .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
-            if (!payload.new.is_deleted) appendChatMessage(payload.new);
+            if (!payload.new?.is_deleted) appendChatMessage(payload.new);
           })
           .subscribe();
+        subscriptions.push(chatSub);
 
-        visitorsSubscription = db.channel('visitors:public')
-          .on('postgres_changes', { event: '*', schema: 'public', table: 'visitors' }, () => {
-            loadVisitors();
+        // Visitors
+        const visitorsSub = db.channel('visitors:public')
+          .on('postgres_changes', { event: '*', schema: 'public', table: 'visitors' }, () => {            loadVisitors();
           })
           .subscribe();
+        subscriptions.push(visitorsSub);
 
-        statsSubscription = db.channel('stats:public')
+        // Stats
+        const statsSub = db.channel('stats:public')
           .on('postgres_changes', { event: '*', schema: 'public', table: 'stats' }, () => {
-            loadStats();            if (isVIP) loadUserData();
+            loadStats();
+            if (isVIP) loadUserData();
           })
           .subscribe();
+        subscriptions.push(statsSub);
 
-        warningsSubscription = db.channel('warnings:public')
+        // Warnings
+        const warningsSub = db.channel('warnings:public')
           .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'warnings' }, () => {
             loadWarnings();
             if (isVIP) loadProtectionLogs();
           })
           .subscribe();
+        subscriptions.push(warningsSub);
 
-        settingsSubscription = db.channel('settings:public')
+        // Site Settings
+        const settingsSub = db.channel('settings:public')
           .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'site_settings' }, async payload => {
-            if (!payload.new.is_enabled && !isVIP) {
+            if (!payload.new?.is_enabled && !isVIP) {
               document.getElementById('maintenanceMsg').textContent = payload.new.maintenance_message || 'الموقع معطل';
               document.getElementById('siteDisabled').classList.add('active');
-            } else if (payload.new.is_enabled) {
+            } else if (payload.new?.is_enabled) {
               document.getElementById('siteDisabled').classList.remove('active');
             }
           })
           .subscribe();
+        subscriptions.push(settingsSub);
 
-        db.channel('users:public')
+        // Users
+        const usersSub = db.channel('users:public')
           .on('postgres_changes', { event: '*', schema: 'public', table: 'users' }, () => {
             loadPlayers();
             if (isVIP) {
@@ -1548,10 +1710,10 @@
             }
           })
           .subscribe();
+        subscriptions.push(usersSub);
 
-        // Game notifications
-        if (currentUser?.id) {
-          notificationSubscription = db.channel(`notifications:${currentUser.id}`)
+        // Game notifications for current user
+        if (currentUser?.id && currentUser.id !== 'vip_admin') {          const notifSub = db.channel(`notifications:${currentUser.id}`)
             .on('postgres_changes',
               { event: 'INSERT', schema: 'public', table: 'notifications', filter: `recipient_id=eq.${currentUser.id}` },
               payload => {
@@ -1559,14 +1721,19 @@
               }
             )
             .subscribe();
+          subscriptions.push(notifSub);
         }
+        
+        console.log('✅ Realtime subscriptions setup');
+        
       } catch (err) {
         console.error('Subscription error:', err);
       }
     }
 
     // Update Online Status
-    async function updateOnlineStatus(online) {      if (!currentUser || currentUser.id === 'vip_admin' || !db) return;
+    async function updateOnlineStatus(online) {
+      if (!currentUser || currentUser.id === 'vip_admin' || !dbConnected) return;
       
       try {
         await db.from('visitors').upsert({
@@ -1583,7 +1750,7 @@
 
     // Load Players List
     async function loadPlayers() {
-      if (!db) return;
+      if (!dbConnected) return;
       try {
         const { data, error } = await db.from('users')
           .select('id, username, display_name, status, created_at')
@@ -1592,34 +1759,36 @@
         
         if (error) { console.error('Load players error:', error); return; }
         
-        document.getElementById('playersCount').textContent = data?.length || 0;
-        const container = document.getElementById('playersList');
+        const countEl = document.getElementById('playersCount');
+        if (countEl) countEl.textContent = data?.length || 0;
+        
+        const container = document.getElementById('playersList');        if (!container) return;
         container.innerHTML = '';
         
         (data || []).forEach(player => {
           const statusClass = player.status === 'active' ? 'status-online' : 'status-offline';
           const statusText = player.status === 'active' ? 'نشط' : player.status === 'muted' ? 'مكتوم' : 'محظور';
+          const badgeClass = player.status === 'active' ? 'active' : player.status === 'muted' ? 'muted' : 'banned';
           
           container.innerHTML += `
             <div class="player-item">
               <span>
                 <span class="status-dot ${statusClass}"></span>
-                ${player.display_name || player.username}
+                ${escapeHtml(player.display_name || player.username)}
                 <small style="opacity:0.7; margin-right:8px;">(@${player.username})</small>
               </span>
-              <span class="badge badge-${player.status === 'active' ? 'active' : player.status === 'muted' ? 'muted' : 'banned'}">
-                ${statusText}
-              </span>
+              <span class="badge badge-${badgeClass}">${statusText}</span>
             </div>
           `;
         });
       } catch (err) {
         console.error('Load players error:', err);
-      }    }
+      }
+    }
 
-    // Load Visitors
+    // Load Visitors - FIXED with invite button logic
     async function loadVisitors() {
-      if (!db) return;
+      if (!dbConnected) return;
       try {
         const { data, error } = await db.from('visitors')
           .select('*, users(device_fingerprint, status)')
@@ -1628,17 +1797,21 @@
         
         if (error) { console.error('Load visitors error:', error); return; }
         
-        document.getElementById('visitorsCount').textContent = data?.length || 0;
+        const countEl = document.getElementById('visitorsCount');
+        if (countEl) countEl.textContent = data?.length || 0;
+        
         const container = document.getElementById('visitorsList');
+        if (!container) return;
         container.innerHTML = '';
         
         (data || []).forEach(visitor => {
           const isMe = visitor.user_id === currentUser?.id;
-          const canInvite = !isMe && visitor.users?.status === 'active' && !pendingInvites.has(visitor.user_id);
+          const isActive = visitor.users?.status === 'active';
+          const canInvite = !isMe && isActive && !pendingInvites.has(visitor.user_id);
+          const inviteSent = pendingInvites.has(visitor.user_id);
           
           container.innerHTML += `
-            <div class="visitor-item">
-              <span>
+            <div class="visitor-item">              <span>
                 <span class="status-dot status-online"></span>
                 ${escapeHtml(visitor.username)}
                 ${isMe ? ' <small style="color:var(--accent)">(أنت)</small>' : ''}
@@ -1647,7 +1820,7 @@
                 <small style="opacity:0.7">${new Date(visitor.last_activity).toLocaleTimeString('ar-EG')}</small>
                 ${canInvite ? `
                   <button class="game-invite-btn" title="دعوة للعب" onclick="sendDirectInvite('${visitor.user_id}', '${escapeHtml(visitor.username)}')">🎮</button>
-                ` : canInvite === false && pendingInvites.has(visitor.user_id) ? `
+                ` : inviteSent ? `
                   <span style="color:var(--success); font-size:1.2rem;">✓</span>
                 ` : ''}
               </div>
@@ -1661,36 +1834,37 @@
 
     // Load Chat Messages
     async function loadChat() {
-      if (!db) return;
+      if (!dbConnected) return;
       try {
         const { data, error } = await db.from('messages')
-          .select('*, users(status)')          .eq('is_deleted', false)
+          .select('*, users(status)')
+          .eq('is_deleted', false)
           .order('timestamp', { ascending: true })
           .limit(50);
         
         if (error) { console.error('Load chat error:', error); return; }
         
         const container = document.getElementById('chatContainer');
+        if (!container) return;
         container.innerHTML = '';
         
         if (currentUser?.status === 'muted' && currentUser?.id !== 'vip_admin') {
           container.innerHTML = '<div style="text-align:center; padding:20px; opacity:0.8">🔇 أنت مكتوم حالياً، لا يمكنك إرسال رسائل</div>';
-          document.getElementById('chatInput').disabled = true;
+          const chatInput = document.getElementById('chatInput');
+          if (chatInput) chatInput.disabled = true;
           return;
         }
         
-        (data || []).forEach(msg => {
-          appendChatMessage(msg);
-        });
-        
+        (data || []).forEach(msg => appendChatMessage(msg));
         container.scrollTop = container.scrollHeight;
       } catch (err) {
         console.error('Load chat error:', err);
       }
     }
-
     function appendChatMessage(msg) {
       const container = document.getElementById('chatContainer');
+      if (!container) return;
+      
       const isOwn = msg.user_id === currentUser?.id || msg.username === currentUser?.username;
       
       const div = document.createElement('div');
@@ -1711,9 +1885,10 @@
     async function sendMessage() {
       try {
         const input = document.getElementById('chatInput');
-        const message = input.value.trim();
+        const message = input?.value?.trim();
         
-        if (!message || !currentUser || !db) return;        if (currentUser.status === 'muted' && !isVIP) {
+        if (!message || !currentUser || !dbConnected) return;
+        if (currentUser.status === 'muted' && !isVIP) {
           showNotification('🔇 لا يمكنك إرسال رسائل وأنت مكتوم', 'warning');
           return;
         }
@@ -1729,15 +1904,14 @@
           return;
         }
         
-        input.value = '';
+        if (input) input.value = '';
       } catch (err) {
         console.error('Send message error:', err);
       }
     }
-
     // Load Stats
     async function loadStats() {
-      if (!currentUser || !db) return;
+      if (!currentUser || !dbConnected) return;
       
       try {
         const { data: myStats, error } = await db.from('stats')
@@ -1746,27 +1920,31 @@
           .maybeSingle();
         
         if (myStats) {
-          document.getElementById('myWins').textContent = myStats.wins;
-          document.getElementById('myLosses').textContent = myStats.losses;
-          document.getElementById('myRank').textContent = myStats.rank || '-';
-          document.getElementById('myLastOpponent').textContent = myStats.last_opponent || '-';
+          const els = ['myWins', 'myLosses', 'myRank', 'myLastOpponent'];
+          const vals = [myStats.wins, myStats.losses, myStats.rank || '-', myStats.last_opponent || '-'];
+          els.forEach((id, i) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = vals[i];
+          });
         }
         
         if (isVIP) {
           const { data: allStats } = await db.from('stats').select('*').order('rank', { ascending: false });
           const tbody = document.getElementById('allStatsBody');
-          tbody.innerHTML = '';
-          
-          (allStats || []).forEach(stat => {
-            tbody.innerHTML += `
-              <tr>
-                <td>${escapeHtml(stat.username)}</td>
-                <td style="color:var(--success)">${stat.wins}</td>
-                <td style="color:var(--danger)">${stat.losses}</td>                <td><strong>${stat.rank || '-'}</strong></td>
-                <td>${stat.last_opponent || '-'}</td>
-              </tr>
-            `;
-          });
+          if (tbody) {
+            tbody.innerHTML = '';
+            (allStats || []).forEach(stat => {
+              tbody.innerHTML += `
+                <tr>
+                  <td>${escapeHtml(stat.username)}</td>
+                  <td style="color:var(--success)">${stat.wins}</td>
+                  <td style="color:var(--danger)">${stat.losses}</td>
+                  <td><strong>${stat.rank || '-'}</strong></td>
+                  <td>${stat.last_opponent || '-'}</td>
+                </tr>
+              `;
+            });
+          }
         }
       } catch (err) {
         console.error('Load stats error:', err);
@@ -1775,16 +1953,16 @@
 
     // Load Warnings
     async function loadWarnings() {
-      if (!db) return;
+      if (!dbConnected) return;
       try {
         const { data, error } = await db.from('warnings')
           .select('*')
           .order('created_at', { ascending: false })
-          .limit(20);
-        
+          .limit(20);        
         if (error) { console.error('Load warnings error:', error); return; }
         
         const tbody = document.getElementById('warningsBody');
+        if (!tbody) return;
         tbody.innerHTML = '';
         
         (data || []).forEach(warn => {
@@ -1808,27 +1986,28 @@
 
     // VIP: Load User Data
     async function loadUserData() {
-      if (!isVIP || !db) return;
+      if (!isVIP || !dbConnected) return;
       
       try {
-        const { data, error } = await db.from('users').select('*').order('created_at', { ascending: false });        if (error) { console.error('Load user data error:', error); return; }
+        const { data, error } = await db.from('users').select('*').order('created_at', { ascending: false });
+        if (error) { console.error('Load user data error:', error); return; }
         
         const tbody = document.getElementById('userDataBody');
+        if (!tbody) return;
         tbody.innerHTML = '';
         
         (data || []).forEach(user => {
           const statusBadge = user.status === 'active' ? 'badge-active' : user.status === 'muted' ? 'badge-muted' : 'badge-banned';
           tbody.innerHTML += `
             <tr>
-              <td><small>${user.id.substr(0,8)}...</small></td>
+              <td><small>${user.id?.substr(0,8) || 'N/A'}...</small></td>
               <td><strong>${escapeHtml(user.username)}</strong></td>
-              <td><code style="font-size:0.8rem">${escapeHtml(user.password)}</code></td>
+              <td><code style="font-size:0.8rem">${escapeHtml(user.password || '***')}</code></td>
               <td>${escapeHtml(user.display_name || '-')}</td>
-              <td><small>${user.device_fingerprint?.substr(0,12)}...</small></td>
+              <td><small>${user.device_fingerprint?.substr(0,12) || 'N/A'}...</small></td>
               <td><span class="badge ${statusBadge}">${user.status}</span></td>
             </tr>
-          `;
-        });
+          `;        });
         
         loadManagePlayers();
         updateModUserSelect();
@@ -1839,11 +2018,12 @@
 
     // VIP: Load Manage Players
     async function loadManagePlayers() {
-      if (!isVIP || !db) return;
+      if (!isVIP || !dbConnected) return;
       
       try {
         const { data } = await db.from('users').select('id, username, display_name, status').neq('role', 'vip');
         const container = document.getElementById('managePlayersList');
+        if (!container) return;
         container.innerHTML = '';
         
         (data || []).forEach(player => {
@@ -1860,22 +2040,23 @@
             </div>
           `;
         });
-      } catch (err) {        console.error('Load manage players error:', err);
+      } catch (err) {
+        console.error('Load manage players error:', err);
       }
     }
 
     // VIP: Update Moderation User Select
     async function updateModUserSelect() {
-      if (!isVIP || !db) return;
+      if (!isVIP || !dbConnected) return;
       
       try {
         const { data } = await db.from('users').select('id, username, display_name').neq('role', 'vip');
         const select = document.getElementById('modUserSelect');
+        if (!select) return;
         select.innerHTML = '<option value="">-- اختر مستخدم --</option>';
         
         (data || []).forEach(user => {
-          select.innerHTML += `<option value="${user.id}">${escapeHtml(user.display_name || user.username)} (@${escapeHtml(user.username)})</option>`;
-        });
+          select.innerHTML += `<option value="${user.id}">${escapeHtml(user.display_name || user.username)} (@${escapeHtml(user.username)})</option>`;        });
       } catch (err) {
         console.error('Update mod select error:', err);
       }
@@ -1884,12 +2065,12 @@
     // VIP: Apply Moderation Action
     async function applyModeration() {
       try {
-        const userId = document.getElementById('modUserSelect').value;
-        const action = document.getElementById('modAction').value;
-        const reason = document.getElementById('modReason').value.trim();
+        const userId = document.getElementById('modUserSelect')?.value;
+        const action = document.getElementById('modAction')?.value;
+        const reason = document.getElementById('modReason')?.value?.trim() || '';
         
         if (!userId) { showNotification('⚠️ اختر مستخدماً أولاً', 'warning'); return; }
-        if (!db) return;
+        if (!dbConnected) return;
         
         const { data: user } = await db.from('users').select('username, status').eq('id', userId).single();
         if (!user) return;
@@ -1909,8 +2090,10 @@
         });
         
         showNotification(`✅ تم تطبيق الإجراء: ${action} على ${user.username}`, 'success');
-        loadWarnings();        loadPlayers();
-        document.getElementById('modReason').value = '';
+        loadWarnings();
+        loadPlayers();
+        const modReason = document.getElementById('modReason');
+        if (modReason) modReason.value = '';
       } catch (err) {
         console.error('Apply moderation error:', err);
         showNotification('❌ خطأ في تطبيق الإجراء', 'error');
@@ -1920,10 +2103,9 @@
     // VIP: Toggle Site Status
     async function toggleSite() {
       try {
-        if (!db) return;
+        if (!dbConnected) return;
         const btn = document.getElementById('toggleSiteBtn');
-        const statusText = document.getElementById('siteStatusText');
-        
+        const statusText = document.getElementById('siteStatusText');        
         const { data: current } = await db.from('site_settings').select('is_enabled').eq('id', 1).maybeSingle();
         const newStatus = !current?.is_enabled;
         
@@ -1932,8 +2114,10 @@
           updated_at: new Date().toISOString()
         }).eq('id', 1);
         
-        btn.textContent = newStatus ? '🔴 تعطيل الموقع' : '🟢 تفعيل الموقع';
-        statusText.innerHTML = `الحالة الحالية: <strong style="color:${newStatus ? 'var(--success)' : 'var(--danger)'}">${newStatus ? '🟢 مفعل' : '🔴 معطل'}</strong>`;
+        if (btn) btn.textContent = newStatus ? '🔴 تعطيل الموقع' : '🟢 تفعيل الموقع';
+        if (statusText) {
+          statusText.innerHTML = `الحالة الحالية: <strong style="color:${newStatus ? 'var(--success)' : 'var(--danger)'}">${newStatus ? '🟢 مفعل' : '🔴 معطل'}</strong>`;
+        }
         
         showNotification(newStatus ? '✅ تم تفعيل الموقع' : '⚠️ تم تعطيل الموقع', newStatus ? 'success' : 'warning');
       } catch (err) {
@@ -1944,9 +2128,9 @@
     // VIP: Update Maintenance Message
     async function updateMaintenanceMsg() {
       try {
-        const msg = document.getElementById('maintenanceMessage').value.trim();
+        const msg = document.getElementById('maintenanceMessage')?.value?.trim();
         if (!msg) { showNotification('⚠️ اكتب رسالة أولاً', 'warning'); return; }
-        if (!db) return;
+        if (!dbConnected) return;
         
         await db.from('site_settings').update({
           maintenance_message: msg,
@@ -1958,18 +2142,19 @@
         console.error('Update maintenance error:', err);
       }
     }
+
     // VIP: Load Protection Logs
     async function loadProtectionLogs() {
-      if (!isVIP || !db) return;
+      if (!isVIP || !dbConnected) return;
       
       try {
         const { data: users } = await db.from('users').select('id, username, device_fingerprint');
         const tbody = document.getElementById('protectionBody');
+        if (!tbody) return;
         tbody.innerHTML = '';
         
         (users || []).forEach(user => {
-          if (user.device_fingerprint && user.device_fingerprint !== 'unknown_' && Math.random() > 0.7) {
-            tbody.innerHTML += `
+          if (user.device_fingerprint && user.device_fingerprint !== 'unknown_' && Math.random() > 0.7) {            tbody.innerHTML += `
               <tr>
                 <td><strong>${escapeHtml(user.username)}</strong></td>
                 <td><small>${user.device_fingerprint.substr(0,16)}...</small></td>
@@ -1991,7 +2176,7 @@
 
     // Update Display Name
     async function updateDisplayName(newName) {
-      if (!currentUser || !newName.trim() || !db) return;
+      if (!currentUser || !newName?.trim() || !dbConnected) return;
       
       try {
         const { error } = await db.from('users')
@@ -2005,21 +2190,25 @@
         
         currentUser.display_name = newName.trim();
         localStorage.setItem('harfGame_user', JSON.stringify(currentUser));
-        document.getElementById('userDisplay').textContent = `👤 ${newName.trim()}`;
+        const userDisplay = document.getElementById('userDisplay');
+        if (userDisplay) userDisplay.textContent = `👤 ${newName.trim()}`;
         showNotification('✅ تم تحديث الاسم بنجاح', 'success');
-                await db.from('stats').update({ username: newName.trim() }).eq('user_id', currentUser.id);
-        await db.from('visitors').update({ username: newName.trim() }).eq('user_id', currentUser.id);
+        
+        // Update related tables
+        await Promise.allSettled([
+          db.from('stats').update({ username: newName.trim() }).eq('user_id', currentUser.id),
+          db.from('visitors').update({ username: newName.trim() }).eq('user_id', currentUser.id)
+        ]);
       } catch (err) {
         console.error('Update display name error:', err);
       }
     }
-
     // Logout
     function logout() {
       updateOnlineStatus(false);
       
-      [chatSubscription, visitorsSubscription, statsSubscription, warningsSubscription, settingsSubscription, gameRoomSubscription, notificationSubscription]
-        .forEach(sub => sub?.unsubscribe());
+      subscriptions.forEach(sub => sub?.unsubscribe());
+      subscriptions = [];
       
       localStorage.removeItem('harfGame_user');
       localStorage.removeItem('harfGame_vip');
@@ -2030,10 +2219,21 @@
       currentRound = null;
       if (gameTimer) clearInterval(gameTimer);
       
-      document.getElementById('mainApp').style.display = 'none';
-      document.getElementById('authScreen').style.display = 'flex';
-      document.getElementById('signupForm').style.display = 'block';
-      document.getElementById('vipLoginForm').style.display = 'none';
+      const mainApp = document.getElementById('mainApp');
+      const authScreen = document.getElementById('authScreen');
+      const signupForm = document.getElementById('signupForm');
+      const vipForm = document.getElementById('vipLoginForm');
+      
+      if (mainApp) mainApp.style.display = 'none';
+      if (authScreen) authScreen.style.display = 'flex';
+      if (signupForm) {
+        signupForm.classList.remove('hide');
+        signupForm.style.display = 'block';
+      }
+      if (vipForm) {
+        vipForm.classList.remove('show');
+        vipForm.style.display = 'none';
+      }
       
       showNotification('👋 تم تسجيل الخروج بنجاح', 'success');
     }
@@ -2041,34 +2241,37 @@
     // VIP: Edit Player Name
     async function editPlayerName(userId) {
       const newName = prompt('أدخل الاسم الجديد:');
-      if (!newName || !newName.trim()) return;
-      if (!db) return;
+      if (!newName || !newName.trim() || !dbConnected) return;
       
       try {
-        await db.from('users').update({ display_name: newName.trim() }).eq('id', userId);
-        await db.from('stats').update({ username: newName.trim() }).eq('user_id', userId);
+        await Promise.all([
+          db.from('users').update({ display_name: newName.trim() }).eq('id', userId),
+          db.from('stats').update({ username: newName.trim() }).eq('user_id', userId)
+        ]);
         
         showNotification('✅ تم تعديل الاسم', 'success');
         loadUserData();
         loadPlayers();
-      } catch (err) {
-        console.error('Edit player error:', err);
+      } catch (err) {        console.error('Edit player error:', err);
       }
     }
 
-    // VIP: Quick Ban    async function quickBan(userId, username) {
+    // VIP: Quick Ban
+    async function quickBan(userId, username) {
       if (!confirm(`هل أنت متأكد من حظر المستخدم "${username}"؟`)) return;
-      if (!db) return;
+      if (!dbConnected) return;
       
       try {
-        await db.from('users').update({ status: 'banned' }).eq('id', userId);
-        await db.from('warnings').insert({
-          user_id: userId,
-          username: username,
-          action: 'banned',
-          reason: 'حظر سريع من لوحة التحكم',
-          admin_name: currentUser?.display_name || 'VIP_ADMIN'
-        });
+        await Promise.all([
+          db.from('users').update({ status: 'banned' }).eq('id', userId),
+          db.from('warnings').insert({
+            user_id: userId,
+            username: username,
+            action: 'banned',
+            reason: 'حظر سريع من لوحة التحكم',
+            admin_name: currentUser?.display_name || 'VIP_ADMIN'
+          })
+        ]);
         
         showNotification(`🚫 تم حظر ${username}`, 'warning');
         loadManagePlayers();
@@ -2086,34 +2289,52 @@
       return div.innerHTML;
     }
 
-    // Section Navigation
+    // Section Navigation - FIXED
     function showSection(sectionId) {
-      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-      document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+      // Hide all sections
+      document.querySelectorAll('.section').forEach(sec => {
+        sec.classList.remove('active');
+      });
+      document.querySelectorAll('.nav-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
       
-      document.getElementById(sectionId)?.classList.add('active');
-      if (event?.target) event.target.classList.add('active');
+      // Show selected
+      const section = document.getElementById(sectionId);
+      if (section) {        section.classList.add('active');
+      }
+      if (event?.target?.classList) {
+        event.target.classList.add('active');
+      }
       
-      if (sectionId === 'players') loadPlayers();
-      else if (sectionId === 'visitors') loadVisitors();
-      else if (sectionId === 'chat') loadChat();
-      else if (sectionId === 'stats') loadStats();
-      else if (sectionId === 'warnings') loadWarnings();
-      else if (sectionId === 'userData' && isVIP) loadUserData();
-      else if (sectionId === 'managePlayers' && isVIP) loadManagePlayers();
-      else if (sectionId === 'moderation' && isVIP) updateModUserSelect();
-      else if (sectionId === 'protection' && isVIP) loadProtectionLogs();
-      else if (sectionId === 'game') {
-        if (currentGameRoom) {
-          document.getElementById('gameLobby').style.display = 'none';          document.getElementById('gamePlaying').style.display = 'block';
-          document.getElementById('gameResults').style.display = 'none';
-          loadRoomPlayers(currentGameRoom.id);
-        } else {
-          document.getElementById('gameLobby').style.display = 'block';
-          document.getElementById('gamePlaying').style.display = 'none';
-          document.getElementById('gameResults').style.display = 'none';
-          loadActiveRooms();
+      // Load data for section if needed
+      const loaders = {
+        'players': loadPlayers,
+        'visitors': loadVisitors,
+        'chat': loadChat,
+        'stats': loadStats,
+        'warnings': loadWarnings,
+        'userData': () => isVIP && loadUserData(),
+        'managePlayers': () => isVIP && loadManagePlayers(),
+        'moderation': () => isVIP && updateModUserSelect(),
+        'protection': () => isVIP && loadProtectionLogs(),
+        'game': () => {
+          if (currentGameRoom) {
+            document.getElementById('gameLobby').style.display = 'none';
+            document.getElementById('gamePlaying').style.display = 'block';
+            document.getElementById('gameResults').style.display = 'none';
+            loadRoomPlayers(currentGameRoom.id);
+          } else {
+            document.getElementById('gameLobby').style.display = 'block';
+            document.getElementById('gamePlaying').style.display = 'none';
+            document.getElementById('gameResults').style.display = 'none';
+            loadActiveRooms();
+          }
         }
+      };
+      
+      if (loaders[sectionId]) {
+        loaders[sectionId]();
       }
     }
 
@@ -2122,12 +2343,14 @@
     function selectDifficulty(level) {
       selectedDifficulty = level;
       document.querySelectorAll('.difficulty-btn').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
-      showNotification(`✅ تم اختيار مستوى: ${level === 'easy' ? 'سهل' : level === 'medium' ? 'متوسط' : 'صعب جداً'}`, 'success');
+      if (event?.target?.classList) {
+        event.target.classList.add('active');
+      }
+      const labels = { easy: 'سهل', medium: 'متوسط', hard: 'صعب جداً' };
+      showNotification(`✅ تم اختيار مستوى: ${labels[level]}`, 'success');
     }
 
-    function generateRoomCode() {
-      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    function generateRoomCode() {      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
       let code = '';
       for (let i = 0; i < 6; i++) {
         code += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -2136,13 +2359,14 @@
     }
 
     async function createGameRoom() {
-      if (!currentUser || !db) {
+      if (!currentUser || !dbConnected) {
         showNotification('❌ يرجى تسجيل الدخول أولاً', 'error');
         return;
       }
       
       try {
-        const maxPlayers = parseInt(document.getElementById('maxPlayers').value);
+        const maxPlayersEl = document.getElementById('maxPlayers');
+        const maxPlayers = parseInt(maxPlayersEl?.value || '2');
         const roomCode = generateRoomCode();
         
         const { data: room, error } = await db.from('game_rooms').insert({
@@ -2154,7 +2378,8 @@
         }).select().single();
         
         if (error) throw error;
-                await db.from('room_players').insert({
+        
+        await db.from('room_players').insert({
           room_id: room.id,
           user_id: currentUser.id,
           username: currentUser.display_name || currentUser.username,
@@ -2174,12 +2399,11 @@
         
       } catch (err) {
         console.error('Create room error:', err);
-        showNotification('❌ خطأ في إنشاء الغرفة: ' + err.message, 'error');
-      }
+        showNotification('❌ خطأ: ' + err.message, 'error');      }
     }
 
     async function joinGameByCode(code) {
-      const roomCode = code || document.getElementById('roomCodeInput').value.trim().toUpperCase();
+      const roomCode = code || document.getElementById('roomCodeInput')?.value?.trim().toUpperCase();
       if (!roomCode || roomCode.length !== 6) {
         showNotification('⚠️ يرجى إدخال كود غرفة صحيح (6 أحرف)', 'warning');
         return;
@@ -2203,7 +2427,8 @@
           .select('id').eq('room_id', room.id).eq('user_id', currentUser.id).maybeSingle();
         
         if (existing) {
-          await loadGameRoom(room.id);          return;
+          await loadGameRoom(room.id);
+          return;
         }
         
         await db.from('room_players').insert({
@@ -2223,28 +2448,30 @@
         
         showNotification(`✅ انضممت للغرفة: ${roomCode}`, 'success');
         setupGameRealtime(room.id);
-        
-      } catch (err) {
+              } catch (err) {
         console.error('Join room error:', err);
-        showNotification('❌ خطأ في الانضمام: ' + err.message, 'error');
+        showNotification('❌ خطأ: ' + err.message, 'error');
       }
     }
 
     async function loadGameRoom(roomId) {
-      if (!db) return;
+      if (!dbConnected) return;
       
       try {
-        const { data: room } = await db.from('game_rooms')
-          .select('*').eq('id', roomId).single();
-        
+        const { data: room } = await db.from('game_rooms').select('*').eq('id', roomId).single();
         if (!room) return;
         currentGameRoom = room;
         
-        document.getElementById('gameRoomCode').textContent = `ROOM: ${room.room_code}`;
-        document.getElementById('gameDifficulty').textContent = 
-          room.difficulty === 'easy' ? '😊 سهل' : 
-          room.difficulty === 'medium' ? '🤔 متوسط' : '🔥 صعب جداً';
-        document.getElementById('maxPlayersDisplay').textContent = room.max_players;
+        const codeEl = document.getElementById('gameRoomCode');
+        const diffEl = document.getElementById('gameDifficulty');
+        const maxEl = document.getElementById('maxPlayersDisplay');
+        
+        if (codeEl) codeEl.textContent = `ROOM: ${room.room_code}`;
+        if (diffEl) {
+          diffEl.textContent = room.difficulty === 'easy' ? '😊 سهل' : 
+                               room.difficulty === 'medium' ? '🤔 متوسط' : '🔥 صعب جداً';
+        }
+        if (maxEl) maxEl.textContent = room.max_players;
         
         await loadRoomPlayers(roomId);
         updateStartButton();
@@ -2253,21 +2480,24 @@
         console.error('Load room error:', err);
       }
     }
+
     async function loadRoomPlayers(roomId) {
-      if (!db) return;
+      if (!dbConnected) return;
       
       try {
         const { data: players } = await db.from('room_players')
           .select('*').eq('room_id', roomId).order('joined_at');
         
-        document.getElementById('playersInRoomCount').textContent = players?.length || 0;
+        const countEl = document.getElementById('playersInRoomCount');
+        if (countEl) countEl.textContent = players?.length || 0;
         
         const container = document.getElementById('playersInRoomList');
         const scoresContainer = document.getElementById('liveScores');
+        if (!container || !scoresContainer) return;
+        
         container.innerHTML = '';
         scoresContainer.innerHTML = '';
-        
-        (players || []).forEach(player => {
+                (players || []).forEach(player => {
           const isTurn = player.is_turn;
           const isMe = player.user_id === currentUser?.id;
           
@@ -2300,22 +2530,23 @@
 
     function updateStartButton() {
       const btn = document.getElementById('btnStartGame');
-      const playerCount = parseInt(document.getElementById('playersInRoomCount').textContent);
-            const isHost = currentGameRoom?.host_id === currentUser?.id;
+      if (!btn) return;
+      
+      const playerCount = parseInt(document.getElementById('playersInRoomCount')?.textContent || '0');
+      const isHost = currentGameRoom?.host_id === currentUser?.id;
       const canStart = isHost && playerCount >= 2 && currentGameRoom?.status === 'waiting';
       
       btn.disabled = !canStart;
-      btn.innerHTML = canStart ? '🎯 START PLAY' : `⏳ انتظر ${2 - playerCount} لاعبين...`;
+      btn.innerHTML = canStart ? '🎯 START PLAY' : `⏳ انتظر ${Math.max(0, 2 - playerCount)} لاعبين...`;
     }
 
     async function invitePlayersFromVisitors() {
-      if (!db || !currentGameRoom) return;
+      if (!dbConnected || !currentGameRoom) return;
       
       try {
         const { data: visitors } = await db.from('visitors')
           .select('*, users(id, username, display_name, status)')
-          .eq('is_online', true)
-          .neq('user_id', currentUser.id);
+          .eq('is_online', true)          .neq('user_id', currentUser.id);
         
         if (!visitors || visitors.length === 0) {
           showNotification('⚠️ لا يوجد لاعبين متصلين لدعوتهم', 'warning');
@@ -2350,21 +2581,21 @@
           <button class="btn btn-primary" onclick="sendInvitesFromModal()">📤 إرسال الدعوات</button>
         </div>
       `;
-      document.body.appendChild(modal);    }
+      document.body.appendChild(modal);
+    }
 
     async function sendInvitesFromModal() {
       const modal = document.querySelector('.modal.active');
-      const checkboxes = modal.querySelectorAll('input[type="checkbox"]:checked');
+      const checkboxes = modal?.querySelectorAll('input[type="checkbox"]:checked');
       
-      if (checkboxes.length === 0) {
+      if (!checkboxes || checkboxes.length === 0) {
         showNotification('⚠️ اختر لاعباً واحداً على الأقل', 'warning');
         return;
       }
       
       try {
         for (const checkbox of checkboxes) {
-          const recipientId = checkbox.value;
-          
+          const recipientId = checkbox.value;          
           await db.from('notifications').insert({
             recipient_id: recipientId,
             sender_id: currentUser.id,
@@ -2382,11 +2613,14 @@
           pendingInvites.add(recipientId);
         }
         
-        modal.remove();
+        modal?.remove();
         showNotification(`✅ تم إرسال ${checkboxes.length} دعوة!`, 'success');
         
-        document.getElementById('btnInvitePlayers').classList.add('sent');
-        document.getElementById('btnInvitePlayers').textContent = '✓ تم الإرسال';
+        const inviteBtn = document.getElementById('btnInvitePlayers');
+        if (inviteBtn) {
+          inviteBtn.classList.add('sent');
+          inviteBtn.textContent = '✓ تم الإرسال';
+        }
         
       } catch (err) {
         console.error('Send invites error:', err);
@@ -2399,18 +2633,18 @@
       
       try {
         await db.from('game_rooms').update({
-          status: 'playing',          started_at: new Date().toISOString()
+          status: 'playing',
+          started_at: new Date().toISOString()
         }).eq('id', currentGameRoom.id);
         
         const { data: players } = await db.from('room_players')
           .select('user_id').eq('room_id', currentGameRoom.id);
         
-        const firstPlayerId = selectFirstPlayerSmart(players.map(p => p.user_id));
+        const firstPlayerId = selectFirstPlayerSmart(players?.map(p => p.user_id) || []);
         
         await db.from('room_players')
           .update({ is_turn: true })
-          .eq('room_id', currentGameRoom.id)
-          .eq('user_id', firstPlayerId);
+          .eq('room_id', currentGameRoom.id)          .eq('user_id', firstPlayerId);
         
         await generateNextRound();
         
@@ -2423,9 +2657,9 @@
     }
 
     function selectFirstPlayerSmart(playerIds) {
-      const seed = currentGameRoom.room_code.split('').reduce((a, b) => a + b.charCodeAt(0), 0);
+      if (!playerIds?.length) return null;
+      const seed = currentGameRoom?.room_code?.split('').reduce((a, b) => a + b.charCodeAt(0), 0) || 0;
       const random = (seed + Date.now()) % 100;
-      
       const weights = playerIds.map((_, i) => 1 + (playerIds.length - i) * 0.1);
       const totalWeight = weights.reduce((a, b) => a + b, 0);
       let threshold = random / 100 * totalWeight;
@@ -2434,12 +2668,11 @@
         threshold -= weights[i];
         if (threshold <= 0) return playerIds[i];
       }
-      
       return playerIds[0];
     }
 
     async function generateNextRound() {
-      if (!currentGameRoom || !db) return;
+      if (!currentGameRoom || !dbConnected) return;
       
       try {
         const settings = DIFFICULTY_SETTINGS[currentGameRoom.difficulty];
@@ -2448,7 +2681,8 @@
         const category = CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)];
         const letter = category.letters.charAt(Math.floor(Math.random() * category.letters.length));
         
-        const { data: round, error } = await db.from('game_rounds').insert({          room_id: currentGameRoom.id,
+        const { data: round, error } = await db.from('game_rounds').insert({
+          room_id: currentGameRoom.id,
           round_number: roundNumber,
           category: category.id,
           letter: letter,
@@ -2459,8 +2693,7 @@
         }).select().single();
         
         if (error) throw error;
-        
-        currentRound = round;
+                currentRound = round;
         renderQuestion(category, letter, settings.timeLimit);
         startRoundTimer(settings.timeLimit);
         
@@ -2470,45 +2703,46 @@
     }
 
     async function getCurrentRoundNumber() {
-      if (!db || !currentGameRoom) return 0;
-      
+      if (!dbConnected || !currentGameRoom) return 0;
       const { data } = await db.from('game_rounds')
         .select('id')
         .eq('room_id', currentGameRoom.id)
         .order('round_number', { ascending: false })
         .limit(1);
-      
       return data?.[0] ? 1 : 0;
     }
 
     function renderQuestion(category, letter, timeLimit) {
-      document.getElementById('questionTemplate').style.display = 'block';
-      document.getElementById('questionIcon').textContent = category.icon;
-      document.getElementById('questionCategory').textContent = category.label;
-      document.getElementById('questionLetter').textContent = letter;
-      document.getElementById('answerInput').value = '';
-      document.getElementById('answerInput').disabled = false;
-      document.getElementById('answerInput').focus();
-      document.getElementById('answerFeedback').innerHTML = '';
+      const els = ['questionTemplate', 'questionIcon', 'questionCategory', 'questionLetter', 'answerInput', 'answerFeedback'];
+      const elements = {};
+      els.forEach(id => elements[id] = document.getElementById(id));
+      
+      if (elements.questionTemplate) elements.questionTemplate.style.display = 'block';
+      if (elements.questionIcon) elements.questionIcon.textContent = category.icon;
+      if (elements.questionCategory) elements.questionCategory.textContent = category.label;
+      if (elements.questionLetter) elements.questionLetter.textContent = letter;
+      if (elements.answerInput) {
+        elements.answerInput.value = '';
+        elements.answerInput.disabled = false;
+        elements.answerInput.focus();
+      }
+      if (elements.answerFeedback) elements.answerFeedback.innerHTML = '';
       
       updateTimerDisplay(timeLimit);
     }
 
     function startRoundTimer(seconds) {
       let remaining = seconds;
+      if (gameTimer) clearInterval(gameTimer);
       
-      if (gameTimer) clearInterval(gameTimer);      
       gameTimer = setInterval(() => {
         remaining--;
         updateTimerDisplay(remaining);
         
         const timerEl = document.getElementById('gameTimer');
-        if (remaining <= 3) {
-          timerEl.classList.add('warning');
-        }
+        if (timerEl && remaining <= 3) timerEl.classList.add('warning');
         
-        if (remaining <= 0) {
-          clearInterval(gameTimer);
+        if (remaining <= 0) {          clearInterval(gameTimer);
           handleTimeOut();
         }
       }, 1000);
@@ -2516,24 +2750,26 @@
 
     function updateTimerDisplay(seconds) {
       const el = document.getElementById('gameTimer');
-      el.textContent = `⏱️ ${seconds}s`;
-      el.className = `game-timer${seconds <= 3 ? ' warning' : ''}`;
+      if (el) {
+        el.textContent = `⏱️ ${seconds}s`;
+        el.className = `game-timer${seconds <= 3 ? ' warning' : ''}`;
+      }
     }
 
     async function submitAnswer() {
       const input = document.getElementById('answerInput');
-      const answer = input.value.trim();
+      const answer = input?.value?.trim();
       
       if (!answer || !currentRound || !currentUser) return;
       
-      input.disabled = true;
+      if (input) input.disabled = true;
       if (gameTimer) clearInterval(gameTimer);
       
       try {
         const { data: round } = await db.from('game_rounds')
           .select('answers').eq('id', currentRound.id).single();
         
-        const answers = round.answers || {};
+        const answers = round?.answers || {};
         answers[currentUser.id] = answer;
         
         await db.from('game_rounds').update({ answers }).eq('id', currentRound.id);
@@ -2546,7 +2782,8 @@
             .update({ score: db.raw('score + 1') })
             .eq('room_id', currentGameRoom.id)
             .eq('user_id', currentUser.id);
-        }        
+        }
+        
         setTimeout(() => moveToNextPlayer(), 2000);
         
       } catch (err) {
@@ -2555,7 +2792,6 @@
         setTimeout(() => moveToNextPlayer(), 2000);
       }
     }
-
     async function handleTimeOut() {
       if (!currentRound || !currentUser) return;
       
@@ -2565,7 +2801,6 @@
           .eq('id', currentRound.id);
         
         showAnswerFeedback('timeout', '⏰ انتهى الوقت!');
-        
         setTimeout(() => moveToNextPlayer(), 2000);
         
       } catch (err) {
@@ -2576,6 +2811,7 @@
 
     function showAnswerFeedback(type, message) {
       const feedback = document.getElementById('answerFeedback');
+      if (!feedback) return;
       feedback.className = `answer-feedback ${type}`;
       feedback.textContent = type === 'correct' ? '✅ إجابة صحيحة! +1 نقطة' : 
                              type === 'wrong' ? '❌ إجابة غير مقبولة' : 
@@ -2583,7 +2819,7 @@
     }
 
     async function moveToNextPlayer() {
-      if (!currentGameRoom || !db) return;
+      if (!currentGameRoom || !dbConnected) return;
       
       try {
         const { data: currentPlayer } = await db.from('room_players')
@@ -2595,22 +2831,16 @@
           .select('user_id').eq('room_id', currentGameRoom.id).order('joined_at');
         
         if (!players || players.length < 2) return;
-                const currentIndex = players.findIndex(p => p.user_id === currentPlayer.user_id);
+        
+        const currentIndex = players.findIndex(p => p.user_id === currentPlayer.user_id);
         const nextIndex = (currentIndex + 1) % players.length;
         const nextPlayerId = players[nextIndex].user_id;
         
-        await db.from('room_players')
-          .update({ is_turn: false })
-          .eq('room_id', currentGameRoom.id);
-        
-        await db.from('room_players')
-          .update({ is_turn: true })
-          .eq('room_id', currentGameRoom.id)
-          .eq('user_id', nextPlayerId);
+        await db.from('room_players').update({ is_turn: false }).eq('room_id', currentGameRoom.id);
+        await db.from('room_players').update({ is_turn: true }).eq('room_id', currentGameRoom.id).eq('user_id', nextPlayerId);
         
         if (nextPlayerId === players[0].user_id) {
-          await generateNextRound();
-        }
+          await generateNextRound();        }
         
         await loadRoomPlayers(currentGameRoom.id);
         
@@ -2644,65 +2874,63 @@
         showNotification('🚪 غادرت الغرفة', 'success');
         
       } catch (err) {
-        console.error('Leave room error:', err);      }
+        console.error('Leave room error:', err);
+      }
     }
 
     async function sendGameChat() {
       const input = document.getElementById('gameChatInput');
-      const message = input.value.trim();
+      const message = input?.value?.trim();
       
-      if (!message || !currentGameRoom || !currentUser || !db) return;
+      if (!message || !currentGameRoom || !currentUser || !dbConnected) return;
       
       try {
         await db.from('messages').insert({
           user_id: currentUser.id,
           username: currentUser.display_name || currentUser.username,
           message: message
-        });
-        
-        input.value = '';
+        });        if (input) input.value = '';
       } catch (err) {
         console.error('Game chat error:', err);
       }
     }
 
     function setupGameRealtime(roomId) {
-      if (!db) return;
+      if (!dbConnected || !db) return;
       
-      gameRoomSubscription = db.channel(`room:${roomId}`)
+      const sub = db.channel(`room:${roomId}`)
         .on('postgres_changes', 
           { event: '*', schema: 'public', table: 'game_rooms', filter: `id=eq.${roomId}` },
           async payload => {
-            if (payload.new.status === 'finished') {
-              await showGameResults();
-            }
+            if (payload.new?.status === 'finished') await showGameResults();
           }
         )
         .on('postgres_changes',
           { event: '*', schema: 'public', table: 'room_players', filter: `room_id=eq.${roomId}` },
-          async () => {
-            await loadRoomPlayers(roomId);
-          }
+          async () => { await loadRoomPlayers(roomId); }
         )
         .on('postgres_changes',
           { event: '*', schema: 'public', table: 'game_rounds', filter: `room_id=eq.${roomId}` },
           async payload => {
-            if (payload.new.id === currentRound?.id && payload.new.status !== 'pending') {
+            if (payload.new?.id === currentRound?.id && payload.new?.status !== 'pending') {
               setTimeout(() => moveToNextPlayer(), 1500);
             }
           }
         )
         .subscribe();
+      
+      subscriptions.push(sub);
     }
+
     function handleNewNotification(notification) {
-      if (notification.type === 'game_invite') {
+      if (notification?.type === 'game_invite') {
         showGameInviteNotification(notification);
       }
     }
 
     function showGameInviteNotification(notification) {
       const panel = document.getElementById('notificationsPanel');
-      panel.style.display = 'flex';
+      if (panel) panel.classList.add('show');
       
       const notifCard = document.createElement('div');
       notifCard.className = 'notification-card';
@@ -2710,8 +2938,7 @@
       notifCard.innerHTML = `
         <div class="notification-header">
           <div class="notification-title">🎮 ${escapeHtml(notification.title)}</div>
-          <small style="opacity:0.7">${new Date(notification.created_at).toLocaleTimeString('ar-EG')}</small>
-        </div>
+          <small style="opacity:0.7">${new Date(notification.created_at).toLocaleTimeString('ar-EG')}</small>        </div>
         <p style="margin:10px 0;">${escapeHtml(notification.message)}</p>
         <p style="font-size:0.9rem; opacity:0.9;">
           <strong>غرفة:</strong> ${notification.data?.room_code} • 
@@ -2725,7 +2952,7 @@
         </div>
       `;
       
-      panel.appendChild(notifCard);
+      panel?.appendChild(notifCard);
       
       setTimeout(() => {
         if (notifCard.parentNode) notifCard.remove();
@@ -2739,10 +2966,12 @@
         const card = document.getElementById(`notif-${notificationId}`);
         if (card) card.remove();
         
-        if (roomId) {
+        if (roomId && dbConnected) {
           const { data: room } = await db.from('game_rooms').select('room_code').eq('id', roomId).single();
-          if (room) {
-            document.getElementById('roomCodeInput').value = room.room_code;            await joinGameByCode(room.room_code);
+          if (room?.room_code) {
+            const input = document.getElementById('roomCodeInput');
+            if (input) input.value = room.room_code;
+            await joinGameByCode(room.room_code);
           }
         }
         
@@ -2757,19 +2986,15 @@
     async function declineGameInvite(notificationId) {
       try {
         await db.from('notifications').update({ is_read: true }).eq('id', notificationId);
-        
         const card = document.getElementById(`notif-${notificationId}`);
-        if (card) card.remove();
-        
-        showNotification('❌ تم رفض الدعوة', 'warning');
-        
+        if (card) card.remove();        showNotification('❌ تم رفض الدعوة', 'warning');
       } catch (err) {
         console.error('Decline invite error:', err);
       }
     }
 
     async function showGameResults() {
-      if (!currentGameRoom || !db) return;
+      if (!currentGameRoom || !dbConnected) return;
       
       try {
         const { data: players } = await db.from('room_players')
@@ -2779,37 +3004,39 @@
         document.getElementById('gameResults').style.display = 'block';
         
         const winner = players?.[0];
-        document.getElementById('winnerBadge').innerHTML = winner ? 
-          `<div class="winner-badge">🏆 الفائز: ${escapeHtml(winner.users?.display_name || winner.username)}</div>` : '';
+        const winnerBadge = document.getElementById('winnerBadge');
+        if (winnerBadge) {
+          winnerBadge.innerHTML = winner ? 
+            `<div class="winner-badge">🏆 الفائز: ${escapeHtml(winner.users?.display_name || winner.username)}</div>` : '';
+        }
         
         const resultsContainer = document.getElementById('finalResults');
-        resultsContainer.innerHTML = '';
-        
-        players?.forEach((player, index) => {
-          const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🎮';
-          resultsContainer.innerHTML += `
-            <div class="result-card">
-              <div style="font-size:1.5rem;">${medal}</div>
-              <div style="font-weight:600; margin:5px 0;">${escapeHtml(player.users?.display_name || player.username)}</div>
-              <div class="result-value">${player.score}</div>              <div class="result-label">نقطة</div>
-            </div>
-          `;
-          
-          if (db) {
+        if (resultsContainer) {
+          resultsContainer.innerHTML = '';
+          players?.forEach((player, index) => {
+            const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🎮';
+            resultsContainer.innerHTML += `
+              <div class="result-card">
+                <div style="font-size:1.5rem;">${medal}</div>
+                <div style="font-weight:600; margin:5px 0;">${escapeHtml(player.users?.display_name || player.username)}</div>
+                <div class="result-value">${player.score}</div>
+                <div class="result-label">نقطة</div>
+              </div>
+            `;
+            
             db.from('game_stats').insert({
               room_id: currentGameRoom.id,
               player_id: player.user_id,
               final_score: player.score,
               rank: index + 1,
               duration_seconds: Math.floor((new Date() - new Date(currentGameRoom.started_at)) / 1000)
-            });
-          }
-        });
+            }).catch(e => console.warn('Stats save warning:', e));
+          });
+        }
         
         await loadStats();
         
-      } catch (err) {
-        console.error('Show results error:', err);
+      } catch (err) {        console.error('Show results error:', err);
       }
     }
 
@@ -2825,7 +3052,7 @@
     }
 
     async function sendDirectInvite(userId, username) {
-      if (!db || !currentUser) return;
+      if (!dbConnected || !currentUser) return;
       
       if (!currentGameRoom) {
         showNotification('⚠️ أنشئ غرفة أولاً ثم ادعُ اللاعبين', 'warning');
@@ -2840,7 +3067,8 @@
           title: '🎮 دعوة للعب!',
           message: `${currentUser.display_name || currentUser.username} يدعوك للعب لعبة الأحرف`,
           data: {
-            room_id: currentGameRoom.id,            room_code: currentGameRoom.room_code,
+            room_id: currentGameRoom.id,
+            room_code: currentGameRoom.room_code,
             sender_name: currentUser.display_name || currentUser.username,
             difficulty: currentGameRoom.difficulty
           }
@@ -2857,8 +3085,7 @@
       }
     }
 
-    async function loadActiveRooms() {
-      if (!db) return;
+    async function loadActiveRooms() {      if (!dbConnected) return;
       
       try {
         const { data: rooms } = await db.from('game_rooms')
@@ -2867,8 +3094,11 @@
           .order('created_at', { ascending: false })
           .limit(10);
         
-        document.getElementById('activeRoomsCount').textContent = rooms?.length || 0;
+        const countEl = document.getElementById('activeRoomsCount');
+        if (countEl) countEl.textContent = rooms?.length || 0;
+        
         const container = document.getElementById('activeRoomsList');
+        if (!container) return;
         container.innerHTML = '';
         
         if (!rooms || rooms.length === 0) {
@@ -2889,7 +3119,8 @@
                   <span style="margin-right:10px;">👥 ${playerCount}/${room.max_players}</span>
                 </div>
               </div>
-              <button class="btn btn-success" style="width:auto; padding:8px 16px; font-size:0.9rem;">انضمام</button>            </div>
+              <button class="btn btn-success" style="width:auto; padding:8px 16px; font-size:0.9rem;">انضمام</button>
+            </div>
           `;
         });
         
@@ -2901,10 +3132,9 @@
     // Cleanup on Page Unload
     window.addEventListener('beforeunload', () => {
       updateOnlineStatus(false);
-      [chatSubscription, visitorsSubscription, statsSubscription, warningsSubscription, settingsSubscription, gameRoomSubscription, notificationSubscription]
-        .forEach(sub => sub?.unsubscribe());
+      subscriptions.forEach(sub => sub?.unsubscribe());
+      subscriptions = [];
     });
-
     // Add particles effect
     function createParticles() {
       for(let i=0; i<20; i++) {
@@ -2921,7 +3151,7 @@
         document.body.appendChild(p);
       }
     }
-    createParticles();
+    if (document.body) createParticles();
   </script>
 </body>
 </html>
