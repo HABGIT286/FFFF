@@ -1712,7 +1712,7 @@
         subscriptions.push(usersSub);
 
         // Game notifications for current user
-        if (currentUser?.id && currentUser.id !== 'vip_admin') {          const notifSub = db.channel(`notifications:${currentUser.id}`)
+        if (currentUser?.id && currentUser.id !== '00000000-0000-0000-0000-000000000001') {          const notifSub = db.channel(`notifications:${currentUser.id}`)
             .on('postgres_changes',
               { event: 'INSERT', schema: 'public', table: 'notifications', filter: `recipient_id=eq.${currentUser.id}` },
               payload => {
@@ -1732,7 +1732,7 @@
 
     // Update Online Status
     async function updateOnlineStatus(online) {
-      if (!currentUser || currentUser.id === 'vip_admin' || !dbConnected) return;
+      if (!currentUser || currentUser.id === '00000000-0000-0000-0000-000000000001' || !dbConnected) return;
       
       try {
         await db.from('visitors').upsert({
@@ -1847,7 +1847,7 @@
         if (!container) return;
         container.innerHTML = '';
         
-        if (currentUser?.status === 'muted' && currentUser?.id !== 'vip_admin') {
+        if (currentUser?.status === 'muted' && currentUser?.id !== '00000000-0000-0000-0000-000000000001') {
           container.innerHTML = '<div style="text-align:center; padding:20px; opacity:0.8">🔇 أنت مكتوم حالياً، لا يمكنك إرسال رسائل</div>';
           const chatInput = document.getElementById('chatInput');
           if (chatInput) chatInput.disabled = true;
