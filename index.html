@@ -6,17 +6,17 @@
     <title>معرض الفيديو الحصري</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;500;700;900&display=swap" rel="stylesheet">
     <style>
-        /* --- إعادة التعيين والحماية الأساسية --- */
+        /* --- إعادة التعيين والحماية القصوى --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            -webkit-touch-callout: none; /* منع قائمة الحفظ في الآيفون عند الضغط المطول */
-            -webkit-tap-highlight-color: transparent; /* إزالة وميض النقر في الهاتف */
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+            -webkit-touch-callout: none !important; /* منع قائمة الحفظ في الآيفون/أندرويد */
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -30,10 +30,10 @@
             justify-content: center;
             align-items: center;
             position: relative;
-            touch-action: none; /* منع التكبير والتصغير والسحب في الهاتف */
+            touch-action: none; /* منع التكبير والسحب */
         }
 
-        /* --- شاشة الدخول (لتفعيل الصوت بشكل قانوني في المتصفح) --- */
+        /* --- شاشة الدخول (مطلوبة لتفعيل الصوت 100%) --- */
         #enter-screen {
             position: fixed;
             top: 0;
@@ -47,32 +47,23 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: opacity 0.8s ease, visibility 0.8s ease;        }
+            transition: opacity 0.6s ease, visibility 0.6s ease;        }
 
         .enter-btn {
             background: linear-gradient(135deg, #d4af37 0%, #f1c40f 100%);
             color: #000;
             border: none;
             padding: 18px 50px;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 900;
             font-family: 'Cairo', sans-serif;
             border-radius: 50px;
             cursor: pointer;
             box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            letter-spacing: 1px;
+            transition: transform 0.2s ease;
         }
 
-        .enter-btn:active {
-            transform: scale(0.95);
-        }
-
-        .enter-text {
-            color: rgba(255, 255, 255, 0.6);
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-        }
+        .enter-btn:active { transform: scale(0.95); }
 
         /* --- خلفية الفيديو --- */
         .video-background {
@@ -97,46 +88,35 @@
             object-fit: cover;
             pointer-events: none;
         }
+
         .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.85) 100%);
-            z-index: -1;
+            background: radial-gradient(circle at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%);
+            z-index: -1;        }
+
+        /* --- علامة مائية متحركة (حماية إضافية ضد تصوير الشاشة) --- */
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 3rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.03); /* شفافة جداً لا تزعج العين لكن تظهر في التصوير */
+            pointer-events: none;
+            z-index: 1;
+            white-space: nowrap;
+            animation: watermarkMove 15s linear infinite;
         }
 
-        /* --- أشكال خلفية متحركة --- */
-        .shape {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(90px);
-            opacity: 0.3;
-            animation: float 12s infinite ease-in-out alternate;
-            z-index: -1;
-        }
-
-        .shape-1 {
-            width: 350px;
-            height: 350px;
-            background: linear-gradient(45deg, #d4af37, #b8860b);
-            top: -50px;
-            left: -50px;
-        }
-
-        .shape-2 {
-            width: 400px;
-            height: 400px;
-            background: linear-gradient(45deg, #1a1a1a, #d4af37);
-            bottom: -100px;
-            right: -100px;
-            animation-delay: -6s;
-        }
-
-        @keyframes float {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(40px, 60px) scale(1.15); }
+        @keyframes watermarkMove {
+            0% { transform: translate(-50%, -50%) rotate(-30deg) scale(1); }
+            50% { transform: translate(-40%, -60%) rotate(-30deg) scale(1.1); }
+            100% { transform: translate(-50%, -50%) rotate(-30deg) scale(1); }
         }
 
         /* --- البطاقة الزجاجية --- */
@@ -145,18 +125,45 @@
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(212, 175, 55, 0.25);
-            border-radius: 28px;            padding: 35px 30px;
+            border-radius: 28px;
+            padding: 35px 30px;
             width: 90%;
             max-width: 550px;
             text-align: center;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), inset 0 0 30px rgba(212, 175, 55, 0.03);
-            animation: cardEntry 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            animation: cardEntry 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
             opacity: 0;
             transform: translateY(40px);
+            position: relative;
+            z-index: 5;
         }
 
         @keyframes cardEntry {
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- رسالة التحذير التي تختفي بعد ثانية واحدة --- */
+        .instant-warning {
+            position: absolute;
+            top: 50%;            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 68, 68, 0.9);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 1rem;
+            z-index: 10;
+            width: 80%;
+            box-shadow: 0 10px 30px rgba(255, 68, 68, 0.3);
+            animation: warnAndVanish 1s forwards; /* تختفي تماماً بعد ثانية */
+        }
+
+        @keyframes warnAndVanish {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); pointer-events: none; }
         }
 
         .warning-badge {
@@ -173,43 +180,24 @@
             margin-bottom: 20px;
         }
 
-        .warning-badge::before {
-            content: '';
-            display: block;
-            width: 8px;
-            height: 8px;
-            background-color: #ff4444;
-            border-radius: 50%;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.6); }
-            70% { box-shadow: 0 0 0 8px rgba(255, 68, 68, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 68, 68, 0); }
-        }
-
         h1 {
             font-size: 2.2rem;
             font-weight: 900;
             margin-bottom: 15px;
             background: linear-gradient(to right, #ffffff, #d4af37, #ffffff);
-            -webkit-background-clip: text;            background-clip: text;
+            -webkit-background-clip: text;
+            background-clip: text;
             color: transparent;
             background-size: 200% auto;
             animation: shine 5s linear infinite;
         }
 
-        @keyframes shine {
-            to { background-position: 200% center; }
-        }
+        @keyframes shine { to { background-position: 200% center; } }
 
-        p.description {
-            color: rgba(255, 255, 255, 0.75);
+        p.description {            color: rgba(255, 255, 255, 0.75);
             font-size: 1rem;
             line-height: 1.7;
             margin-bottom: 25px;
-            font-weight: 400;
         }
 
         .security-rules {
@@ -243,43 +231,11 @@
 
         .security-rules li::before {
             content: '◆';
-            position: absolute;            right: 0;
+            position: absolute;
+            right: 0;
             color: #d4af37;
             font-size: 0.6rem;
             top: 5px;
-        }
-
-        /* --- رسالة التحذير المنبثقة (تختفي تلقائياً) --- */
-        #custom-warning {
-            position: fixed;
-            top: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-100px);
-            background: rgba(20, 20, 20, 0.95);
-            border: 1px solid #ff4444;
-            color: #ffffff;
-            padding: 15px 30px;
-            border-radius: 12px;
-            font-family: 'Cairo', sans-serif;
-            font-weight: 700;
-            font-size: 0.95rem;
-            z-index: 10000;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
-            opacity: 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        #custom-warning.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-
-        #custom-warning::before {
-            content: '⚠️';
-            font-size: 1.2rem;
         }
 
         /* طبقة حماية شفافة */
@@ -287,33 +243,36 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100%;            height: 100%;
             z-index: 4;
         }
     </style>
-</head><body oncontextmenu="return false;" oncopy="return false;" oncut="return false;" onpaste="return false;">
+</head>
+<body oncontextmenu="return false;" oncopy="return false;" oncut="return false;" onpaste="return false;">
 
-    <!-- شاشة الدخول (مطلوبة لتفعيل الصوت في المتصفحات) -->
+    <!-- شاشة الدخول (مفتاح تشغيل الصوت) -->
     <div id="enter-screen">
-        <div class="enter-text">محتوى محمي بصوت عالي الدقة</div>
+        <div style="color: rgba(255,255,255,0.6); margin-bottom: 20px; font-size: 0.9rem;">محتوى محمي بصوت عالي الدقة</div>
         <button class="enter-btn" id="start-btn">دخول التجربة</button>
     </div>
 
     <!-- خلفية الفيديو -->
     <div class="video-background">
-        <!-- تمت إزالة muted ليعمل الصوت، وتمت إضافة playsinline للهاتف -->
         <video id="bgVideo" loop playsinline disablePictureInPicture>
             <source src="FF.mp4" type="video/mp4">
         </video>
     </div>
 
     <div class="overlay"></div>
-    <div class="shape shape-1"></div>
-    <div class="shape shape-2"></div>
+    
+    <!-- علامة مائية خفية للحماية من التصوير -->
+    <div class="watermark">ممنوع التصوير أو النشر</div>
 
     <!-- البطاقة الزجاجية -->
     <div class="glass-card">
+        <!-- رسالة التحذير التي تختفي بعد ثانية واحدة -->
+        <div class="instant-warning">⚠️ تحذير: المحتوى محمي ومراقب</div>
+
         <div class="warning-badge">نظام حماية نشط</div>
         <h1>العرض الحصري</h1>
         <p class="description">
@@ -333,91 +292,71 @@
             </ul>
         </div>
     </div>
-
     <div class="protection-layer"></div>
-
-    <!-- عنصر التحذير المخفي -->
-    <div id="custom-warning">تنبيه أمني: هذا الإجراء محظور!</div>
 
     <script>
         const video = document.getElementById('bgVideo');
-        const enterScreen = document.getElementById('enter-screen');        const startBtn = document.getElementById('start-btn');
-        const warningEl = document.getElementById('custom-warning');
-        let warningTimeout;
+        const enterScreen = document.getElementById('enter-screen');
+        const startBtn = document.getElementById('start-btn');
 
-        // 1. تفعيل الفيديو والصوت عند الضغط على زر الدخول
+        // 1. تشغيل الفيديو مع الصوت عند الضغط على الزر
         startBtn.addEventListener('click', () => {
+            video.muted = false; // التأكد من أن الصوت مفعل
+            video.volume = 1.0;  // أعلى مستوى للصوت
+            
             video.play().then(() => {
-                // تشغيل الصوت بنجاح
+                // إخفاء شاشة الدخول بسلاسة
                 enterScreen.style.opacity = '0';
                 enterScreen.style.visibility = 'hidden';
                 setTimeout(() => {
                     enterScreen.style.display = 'none';
-                }, 800);
+                }, 600);
             }).catch(error => {
-                console.error("فشل تشغيل الفيديو:", error);
-                showWarning("يرجى السماح بتشغيل الصوت في إعدادات المتصفح");
+                console.error("فشل تشغيل الصوت:", error);
+                alert("يرجى السماح بتشغيل الصوت في إعدادات متصفحك");
             });
         });
 
-        // 2. دالة إظهار وإخفاء التحذير بشكل نظيف تماماً
-        function showWarning(message) {
-            // إلغاء أي مؤقت سابق لمنع التداخل
-            if (warningTimeout) clearTimeout(warningTimeout);
-            
-            warningEl.textContent = message;
-            warningEl.classList.add('show');
-            
-            // إخفاء الرسالة وحذفها من الذاكرة بعد 3 ثوانٍ
-            warningTimeout = setTimeout(() => {
-                warningEl.classList.remove('show');
-            }, 3000);
-        }
-
-        // 3. منع النقر بزر الماوس الأيمن
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            showWarning("⛔ النقر بزر الماوس الأيمن محظور");
-        });
-
-        // 4. منع الضغط المطول (Long Press) في الهواتف (آيفون وأندرويد)
-        document.addEventListener('touchstart', function(e) {
-            if (e.target.tagName !== 'BUTTON') { // السماح بالضغط على زر الدخول فقط
-                e.preventDefault();
-            }
-        }, { passive: false });
-
-        // 5. منع اختصارات لوحة المفاتيح
-        document.addEventListener('keydown', function(e) {
-            if (
-                (e.ctrlKey && (e.key === 's' || e.key === 'u' || e.key === 'p' || e.key === 'c')) ||                e.key === 'F12' ||
-                e.key === 'PrintScreen' ||
-                (e.ctrlKey && e.shiftKey && e.key === 'I')
-            ) {
-                e.preventDefault();
-                showWarning("⛔ اختصارات الحفظ والتصوير معطلة");
-                return false;
-            }
-        });
-
-        // 6. الحماية من تسجيل الشاشة في الهاتف (أقصى حد ممكن)
-        // إذا قام المستخدم بتصغير المتصفح (لفتح برنامج تسجيل شاشة)، سيتم تشويش الفيديو وإيقافه
+        // 2. الحماية القصوى من تصوير الشاشة (تشويش عند مغادرة المتصفح)
+        // هذا يمنع من يفتح المتصفح المخفي ثم يفتح تطبيق تصوير الشاشة
         document.addEventListener('visibilitychange', function() {
             if (document.hidden) {
                 video.pause();
-                document.body.style.filter = 'blur(30px) brightness(0.2)';
+                document.body.style.filter = 'blur(40px) brightness(0.1)';
             } else {
                 document.body.style.filter = 'none';
                 video.play();
             }
         });
 
-        // 7. منع سحب العناصر
+        // 3. منع زر PrintScreen في الكمبيوتر
+        document.addEventListener('keyup', (e) => {
+            if (e.key === 'PrintScreen') {
+                navigator.clipboard.writeText(''); // مسح الحافظة
+                document.body.style.filter = 'blur(40px)';
+                setTimeout(() => { document.body.style.filter = 'none'; }, 2000);
+                alert('⛔ تصوير الشاشة محظور في هذا الموقع!');
+            }
+        });
+
+        // 4. منع النقر بزر الماوس الأيمن
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();            return false;
+        });
+
+        // 5. منع السحب والإفلات
         document.addEventListener('dragstart', function(e) {
             e.preventDefault();
         });
 
-        // 8. تعطيل قائمة السياق للفيديو بشكل مزدوج
+        // 6. منع الضغط المطول (Long Press) في الهواتف بشكل قاطع
+        document.addEventListener('touchstart', function(e) {
+            if (e.target.tagName !== 'BUTTON') {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // 7. تعطيل أي محاولة للتحكم في الفيديو
         video.setAttribute('oncontextmenu', 'return false;');
         video.setAttribute('controlslist', 'nodownload nofullscreen noremoteplayback');
     </script>
